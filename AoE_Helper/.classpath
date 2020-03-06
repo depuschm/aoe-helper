@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
+	<classpathentry kind="lib" path="lib/jna-platform.jar"/>
+	<classpathentry kind="lib" path="lib/jna.jar"/>
+	<classpathentry kind="lib" path="lib/tess4j-3.4.8.jar"/>
+	<classpathentry kind="lib" path="lib/tesseract/commons-beanutils-1.9.2.jar"/>
+	<classpathentry kind="lib" path="lib/tesseract/commons-io-2.6.jar"/>
+	<classpathentry kind="lib" path="lib/tesseract/commons-logging-1.2.jar"/>
+	<classpathentry kind="lib" path="lib/tesseract/fontbox-2.0.9.jar"/>
+	<classpathentry kind="lib" path="lib/tesseract/jcl-over-slf4j-1.7.25.jar"/>
+	<classpathentry kind="lib" path="lib/tesseract/jul-to-slf4j-1.7.25.jar"/>
+	<classpathentry kind="lib" path="lib/tesseract/junit-4.12.jar"/>
+	<classpathentry kind="lib" path="lib/tesseract/lept4j-1.6.4.jar"/>
+	<classpathentry kind="lib" path="lib/tesseract/pdfbox-2.0.9.jar"/>
+	<classpathentry kind="lib" path="lib/tesseract/pdfbox-tools-2.0.9.jar"/>
+	<classpathentry kind="lib" path="lib/tesseract/slf4j-api-1.7.25.jar"/>
+	<classpathentry kind="lib" path="lib/tesseract/xmlgraphics-commons-1.5.jar"/>
+	<classpathentry kind="lib" path="lib/tesseract/ghost4j-1.0.1.jar"/>
+	<classpathentry kind="lib" path="lib/tesseract/hamcrest-core-1.3.jar"/>
+	<classpathentry kind="lib" path="lib/tesseract/itext-2.1.7.jar"/>
+	<classpathentry kind="lib" path="lib/tesseract/jai-imageio-core-1.4.0.jar"/>
+	<classpathentry kind="lib" path="lib/tesseract/jbig2-imageio-3.0.0.jar"/>
+	<classpathentry kind="lib" path="lib/tesseract/jboss-vfs-3.2.12.Final.jar"/>
+	<classpathentry kind="lib" path="lib/tesseract/jna-4.1.0.jar"/>
+	<classpathentry kind="lib" path="lib/tesseract/log4j-1.2.17.jar"/>
+	<classpathentry kind="lib" path="lib/tesseract/log4j-over-slf4j-1.7.25.jar"/>
+	<classpathentry kind="lib" path="lib/tesseract/logback-classic-1.2.3.jar"/>
+	<classpathentry kind="lib" path="lib/tesseract/logback-core-1.2.3.jar"/>
+	<classpathentry kind="lib" path="lib/jnativehook-2.1.0.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

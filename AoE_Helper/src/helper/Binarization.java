@@ -6,6 +6,9 @@ import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 
+/**
+ * From: https://github.com/pclubiitk/ocr-native/blob/master/Binarization.java
+ */
 public class Binarization {
 
 	private static BufferedImage grayscale, binarized;

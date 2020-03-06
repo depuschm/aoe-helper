@@ -1,5 +1,5 @@
 # aoe_helper
-This program is intended to help the user while playing the game "Age of Empires II: DE".
+This program is intended to help the player while playing the game "Age of Empires II: DE".
 
 ## About
 
@@ -18,17 +18,17 @@ An execubale jar file is in the folder AoE_Helper/dist.
 It's optimized for Windows and a resolution of 1920x1080. To end the program simply click the "." key. The demo was tested ingame with the "Vietnamese" civilization, the user is notified when he needs to make houses.
 
 
-<!--## 🌈 Screenshots
+## 🌈 Screenshots
 
 Ingame
 <p align="center">
-  <img src="">
+  <img src="https://github.com/rayo3/aoe_helper/blob/master/AoE_Helper/screenshots/ingame.jpg">
 </p>
 
 Not ingame
 <p align="center">
-  <img src="">
-</p>-->
+  <img src="https://github.com/rayo3/aoe_helper/blob/master/AoE_Helper/screenshots/not_ingame.jpg">
+</p>
 
 ## 🔨Development
 

@@ -33,7 +33,7 @@ Not ingame
 ## 🔨Development
 
 ### WIP
-- "Build House" message (if pop + 2 <= max_pop)
+- "Build House" message (if pop + 2 >= max_pop)
 
 ### TODO
 - Show BOs and common strategies for civilizations

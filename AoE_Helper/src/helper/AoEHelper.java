@@ -17,11 +17,11 @@ public class AoEHelper {
 		int milliseconds = 1000;
 		Timer timer = new Timer();
 		TimerTask myTask = new TimerTask() {
-		    @Override
-		    public void run() {
-		        // This part is executed every x millisecondsw
-		    	
-		    	// Create screen capture
+			@Override
+			public void run() {
+				// This part is executed every x milliseconds
+				
+				// Create screen capture
 				BufferedImage image = screenCapture.captureImage();
 				
 				// Recognize captured image
@@ -35,7 +35,7 @@ public class AoEHelper {
 				if (quitApplication) {
 					System.exit(0);
 				}
-		    }
+			}
 		};
 		timer.schedule(myTask, milliseconds, milliseconds);
 	}

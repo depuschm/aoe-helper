@@ -68,27 +68,18 @@ public class Overlay implements NativeKeyListener {
 	         * This will draw a black cross on screen.
 	         */
 	        protected void paintComponent(Graphics g) {
-	        	//super.paintComponent(g);
+	        	super.paintComponent(g);
 	        	Graphics2D g2 = (Graphics2D) g;
 	        	
-	            g2.setColor(Color.BLACK);
 	            //g.fillRect(0, getHeight() / 2 - 10, getWidth(), 20);
 	            //g.fillRect(getWidth() / 2 - 10, 0, 20, getHeight());
 	            //g.drawString("Hello World", 100, 100);
 	            
-	            // Draw text background
+	            // Draw text
 	            int x = getWidth() / 2;
 	            int y = 20;
 	            
-	            Rectangle bounds = getStringBounds(g2, textToDisplay, x, y);
-	            extendRectangle(bounds, 3, 3);
-	            
-	            g2.setColor(Color.WHITE);
-	            g2.fill(bounds);
-	            
-	            // TODO: Fix flickering, text causes flickering, maybe just draw if text really changed (use textPrevious)
-	            g2.setColor(Color.BLACK);
-	            g2.drawString(textToDisplay, x, y);
+	            drawTextWithBackground(g2, x, y);
 	            
 	            // Draw image of house if almost housed
 	            if (houseNeeded)
@@ -110,6 +101,22 @@ public class Overlay implements NativeKeyListener {
 	    w.setAlwaysOnTop(true);
 	    
 	    setTransparent(w);
+	}
+	
+	/**
+	 * Draws a black text with a white background behind to highlight the text
+	 */
+	private void drawTextWithBackground(Graphics2D g2, int x, int y) {
+		// Draw text background
+        Rectangle bounds = getStringBounds(g2, textToDisplay, x, y);
+        extendRectangle(bounds, 3, 3);
+        
+        g2.setColor(Color.WHITE);
+        g2.fill(bounds);
+        
+        // TODO: Fix flickering, text causes flickering, maybe just draw if text really changed (use textPrevious)
+        g2.setColor(Color.BLACK);
+        g2.drawString(textToDisplay, x, y);
 	}
 	
 	/**

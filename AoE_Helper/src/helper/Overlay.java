@@ -128,8 +128,8 @@ public class Overlay implements NativeKeyListener {
 	 */
 	private void extendRectangle(Rectangle bounds, int horizontalPixels, int verticalPixels) {
 		Dimension newSize = new Dimension(bounds.width + horizontalPixels*2 + 1, bounds.height + verticalPixels*2 + 1);
-        bounds.setLocation(bounds.x-horizontalPixels, bounds.y-verticalPixels);
-        bounds.setSize(newSize);
+		bounds.setLocation(bounds.x-horizontalPixels, bounds.y-verticalPixels);
+		bounds.setSize(newSize);
 	}
 
 	private static void setTransparent(Component w) {

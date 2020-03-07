@@ -75,7 +75,7 @@ public class PartialScreenCapture {
 	 */
 	private static BufferedImage imagePostProcessing(BufferedImage image) {
 		//image = Binarization.GetBmp(image);
-		image = grayScaleImage(image, 96); // making the image darker seems to help differentiating between 0 and 9
+		image = grayScaleImage(image, 95); // making the image darker seems to help differentiating between 0 and 9
 		
 		image = Binarization.GetBmp(image);
 		image = scaleImage(image, 2.0f, AffineTransformOp.TYPE_BILINEAR);

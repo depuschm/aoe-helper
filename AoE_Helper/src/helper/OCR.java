@@ -51,7 +51,7 @@ public class OCR {
 		instance.setTessVariable("classify_enable_adaptive_matcher", FALSE);
 		/* ================================================================= */
 	    
-		String dataPath = System.getProperty("user.dir") + "\\tessdata";
+		String dataPath = System.getProperty("user.dir") + "/data/tessdata";
 		instance.setDatapath(dataPath);
 		
 		// create a try catch to run the OCR on te document referenced above

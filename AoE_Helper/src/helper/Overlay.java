@@ -4,12 +4,21 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.Toolkit;
 import java.awt.Window;
-import java.awt.event.KeyEvent;
+import java.awt.font.FontRenderContext;
+import java.awt.font.GlyphVector;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
+import javax.imageio.ImageIO;
 import javax.swing.JComponent;
 
 import org.jnativehook.GlobalScreen;
@@ -31,15 +40,27 @@ public class Overlay implements NativeKeyListener {
 	private String textToDisplay;
 	private JComponent paintComponent;
 	
+	private BufferedImage imageHouse;
+	private boolean houseNeeded;
+	
 	public Overlay() {
 		textToDisplay = "Age of Empires";
 		InitJNativeHook();
 		Window w = new Window(null);
+		
+		// Load images
+		File resource = new File("data/images/house.png");
+        try {
+            imageHouse = ImageIO.read(resource);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 	    
 	    /**
 	     * This sets the background of the window to be transparent.
 	     */
 	    //AWTUtilities.setWindowOpaque(w, false);
+        //w.setBackground(new Color(255, 255, 255, 60)); 
         w.setBackground(new Color(0, 0, 0, 0)); 
         
         paintComponent = (JComponent) w.add(new JComponent() {
@@ -48,27 +69,67 @@ public class Overlay implements NativeKeyListener {
 	         */
 	        protected void paintComponent(Graphics g) {
 	        	//super.paintComponent(g);
-	            g.setColor(Color.BLACK);
+	        	Graphics2D g2 = (Graphics2D) g;
+	        	
+	            g2.setColor(Color.BLACK);
 	            //g.fillRect(0, getHeight() / 2 - 10, getWidth(), 20);
 	            //g.fillRect(getWidth() / 2 - 10, 0, 20, getHeight());
 	            //g.drawString("Hello World", 100, 100);
 	            
-	            g.drawString(textToDisplay, getWidth() / 2, getHeight() / 2);
+	            // Draw text background
+	            int x = getWidth() / 2;
+	            int y = 20;
+	            
+	            Rectangle bounds = getStringBounds(g2, textToDisplay, x, y);
+	            extendRectangle(bounds, 3, 3);
+	            
+	            g2.setColor(Color.WHITE);
+	            g2.fill(bounds);
+	            
+	            // TODO: Fix flickering, text causes flickering, maybe just draw if text really changed (use textPrevious)
+	            g2.setColor(Color.BLACK);
+	            g2.drawString(textToDisplay, x, y);
+	            
+	            // Draw image of house if almost housed
+	            if (houseNeeded)
+	            	g2.drawImage(imageHouse, 405, 0, 100, 100, this);
 	            //repaint();
 	        }
 
 	        public Dimension getPreferredSize() {
-	        	return new Dimension(300, 100);
+	        	//return new Dimension(300, 100);
+	        	return new Dimension(1920, 840);
 	            //return Toolkit.getDefaultToolkit().getScreenSize();
 	        }
 	    });
         
 	    w.pack();
-	    w.setLocationRelativeTo(null);
+	    //w.setLocationRelativeTo(null);
+	    w.setLocation(new Point(0, 58));
 	    w.setVisible(true);
 	    w.setAlwaysOnTop(true);
 	    
 	    setTransparent(w);
+	}
+	
+	/**
+	 * From: https://stackoverflow.com/questions/368295/how-to-get-real-string-height-in-java/12495108
+	 */
+	private Rectangle getStringBounds(Graphics2D g2, String str,
+            float x, float y)
+	{
+		FontRenderContext frc = g2.getFontRenderContext();
+		GlyphVector gv = g2.getFont().createGlyphVector(frc, str);
+		return gv.getPixelBounds(null, x, y);
+	}
+	
+	/**
+	 * From: https://stackoverflow.com/questions/20899390/how-to-make-boundscollision-rectangle-smaller-size-than-the-sprite-in-libgdx
+	 */
+	private void extendRectangle(Rectangle bounds, int horizontalPixels, int verticalPixels) {
+		Dimension newSize = new Dimension(bounds.width + horizontalPixels*2 + 1, bounds.height + verticalPixels*2 + 1);
+        bounds.setLocation(bounds.x-horizontalPixels, bounds.y-verticalPixels);
+        bounds.setSize(newSize);
 	}
 
 	private static void setTransparent(Component w) {
@@ -98,6 +159,9 @@ public class Overlay implements NativeKeyListener {
 	private String analyseText(String text) {
 		String[] textSplit = text.split("/");
 		
+		// Reset variables
+		houseNeeded = false;
+		
 		// Verify that split was successful
 		try {
 			// Get pop and max pop
@@ -106,7 +170,7 @@ public class Overlay implements NativeKeyListener {
 			
 			// Add house warning
 			if (pop + 2 >= pop_max) {
-				text += " (Make house!)";
+				houseNeeded = true;
 			}
 		} catch (Exception e) {
 			// Exception might happen either if / was not found or parsing was not successful

@@ -1,0 +1,30 @@
+[{
+    "title": "BO: Fast Castle - Boom",
+	"triggers": {
+        "population": {
+			"dark_age": {
+				"3": "Build 2 houses, then send your first 6 villagers to sheep.",
+				"6": "Now send the next 4 villagers to wood.",
+				"10": "Now send the next villager to lure the boar.",
+				"11": "The next 5 villagers should go to berries. Build 2 houses with the next villager.",
+				"14": "Now use one of your villagers underneath the town center to lure the second boar.",
+				"16": "Now send the next 2 villagers to boar.",
+				"17": "Also move 2 villager from the boar to build farms.",
+				"18": "Now send more villagers to wood, until you have 9 villagers split between 2 lumber camps.",
+				"22": "Now build another house.",
+				"23": "Now send the last 3 villagers to gold. Also start moving villagers from sheep to make farms.",
+				"26": "Now research loom, and then click Feudal with 27 population."
+			},
+			"feudal_age": {
+				"26": "Now build a market and a blacksmith and send te next 2 villagers to wood. You should then be able to click up to the Castle age.",
+				"28": "Now start moving villagers from berries, so that you have at least 14 villagers on wood. Research both double-bit axe and horse collar."
+			},
+			"castle_age": {
+				"29": "End of build order"
+			}
+		},
+		"timer": {
+			"10": "As the sheep run out, continue moving villagers to farms until you have 8 farms."
+		}
+    }
+}]

@@ -13,6 +13,8 @@ import java.awt.font.FontRenderContext;
 import java.awt.font.GlyphVector;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
@@ -25,6 +27,10 @@ import org.jnativehook.GlobalScreen;
 import org.jnativehook.NativeHookException;
 import org.jnativehook.keyboard.NativeKeyEvent;
 import org.jnativehook.keyboard.NativeKeyListener;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import com.sun.jna.Native;
 import com.sun.jna.platform.win32.User32;
@@ -37,14 +43,16 @@ import com.sun.jna.platform.win32.WinUser;
  */
 public class Overlay implements NativeKeyListener {
 	
-	private String textToDisplay;
+	private String textToDisplay, textBO;
 	private JComponent paintComponent;
 	
 	private BufferedImage imageHouse;
 	private boolean houseNeeded;
+	private static JSONObject darkAge;
 	
 	public Overlay() {
 		textToDisplay = "Age of Empires";
+		textBO = "";
 		InitJNativeHook();
 		Window w = new Window(null);
 		
@@ -53,6 +61,26 @@ public class Overlay implements NativeKeyListener {
         try {
             imageHouse = ImageIO.read(resource);
         } catch (IOException e) {
+            e.printStackTrace();
+        }
+        
+        // Load Text
+        JSONParser jsonParser = new JSONParser();
+        try (FileReader reader = new FileReader("data/text/bo_fastcastle-boom.json")) {
+        	//Read JSON file
+        	Object obj = jsonParser.parse(reader);
+        	
+        	JSONArray list = (JSONArray) obj;
+        	//System.out.println(list);
+        	
+        	//Get json object within list
+        	list.forEach(txt -> parseJSONObject((JSONObject) txt));
+            
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
             e.printStackTrace();
         }
 	    
@@ -79,7 +107,8 @@ public class Overlay implements NativeKeyListener {
 	            int x = getWidth() / 2;
 	            int y = 20;
 	            
-	            drawTextWithBackground(g2, x, y);
+	            drawTextWithBackground(g2, textToDisplay, x, y);
+	            drawTextWithBackground(g2, textBO, x, y + 20);
 	            
 	            // Draw image of house if almost housed
 	            if (houseNeeded)
@@ -103,12 +132,30 @@ public class Overlay implements NativeKeyListener {
 	    setTransparent(w);
 	}
 	
+	 private static void parseJSONObject(JSONObject json) {
+		 // Get triggers object within list
+		 JSONObject triggers = (JSONObject) json.get("triggers");
+		 JSONObject population = (JSONObject) triggers.get("population");
+		 darkAge = (JSONObject) population.get("dark_age");
+		 
+		// Print first trigger
+	    //String trigger = getTextFromJSONObject(darkAge, "3");
+	    //System.out.println(trigger);
+	 }
+	 
+	 private static String getTextFromJSONObject(JSONObject jsonObject, String key) {
+		 if (jsonObject.containsKey(key)) {
+			 return (String) jsonObject.get(key);
+		 }
+		 return "";
+	 }
+	
 	/**
 	 * Draws a black text with a white background behind to highlight the text
 	 */
-	private void drawTextWithBackground(Graphics2D g2, int x, int y) {
+	private void drawTextWithBackground(Graphics2D g2, String text, int x, int y) {
 		// Draw text background
-        Rectangle bounds = getStringBounds(g2, textToDisplay, x, y);
+		Rectangle bounds = getStringBounds(g2, text, x, y);
         extendRectangle(bounds, 3, 3);
         
         g2.setColor(Color.WHITE);
@@ -116,15 +163,13 @@ public class Overlay implements NativeKeyListener {
         
         // TODO: Fix flickering, text causes flickering, maybe just draw if text really changed (use textPrevious)
         g2.setColor(Color.BLACK);
-        g2.drawString(textToDisplay, x, y);
+        g2.drawString(text, x, y);
 	}
 	
 	/**
 	 * From: https://stackoverflow.com/questions/368295/how-to-get-real-string-height-in-java/12495108
 	 */
-	private Rectangle getStringBounds(Graphics2D g2, String str,
-            float x, float y)
-	{
+	private Rectangle getStringBounds(Graphics2D g2, String str, float x, float y) {
 		FontRenderContext frc = g2.getFontRenderContext();
 		GlyphVector gv = g2.getFont().createGlyphVector(frc, str);
 		return gv.getPixelBounds(null, x, y);
@@ -168,6 +213,7 @@ public class Overlay implements NativeKeyListener {
 		
 		// Reset variables
 		houseNeeded = false;
+		textBO = "";
 		
 		// Verify that split was successful
 		try {
@@ -179,7 +225,11 @@ public class Overlay implements NativeKeyListener {
 			if (pop + 2 >= pop_max) {
 				houseNeeded = true;
 			}
-		} catch (Exception e) {
+			
+			// Add build order text
+			textBO = getTextFromJSONObject(darkAge, "" + pop);
+		}
+		catch (Exception e) {
 			// Exception might happen either if / was not found or parsing was not successful
 			//System.err.println(e.getMessage());
 			text = "Not ingame";

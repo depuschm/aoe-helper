@@ -24,12 +24,12 @@ An execubale jar file is in the folder "AoE_Helper/dist". Ingame, the player is 
 
 Ingame
 <p align="center">
-  <img src="https://github.com/rayo3/aoe_helper/blob/master/AoE_Helper/screenshots/ingame.jpg">
+  <img src="https://raw.githubusercontent.com/rayo3/aoe_helper/master/AoE_Helper/screenshots/ingame.jpg">
 </p>
 
 Not ingame
 <p align="center">
-  <img src="https://github.com/rayo3/aoe_helper/blob/master/AoE_Helper/screenshots/not_ingame.jpg">
+  <img src="https://raw.githubusercontent.com/rayo3/aoe_helper/master/AoE_Helper/screenshots/not_ingame.jpg">
 </p>
 
 ## 🔨Development

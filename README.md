@@ -11,12 +11,14 @@ These technologies are used to develop this program:
 - [JNA](https://github.com/java-native-access/jna) (used to make a click-through window)
 - [jnativehook](https://github.com/kwhat/jnativehook) (used for global keyboard listening)
 - [tess4j](https://github.com/nguyenq/tess4j) (used to recognize characters)
+- [json-simple](https://github.com/fangyidong/json-simple) (used to parse json files)
 
 ## 🎮 Demo
 
-An execubale jar file is in the folder AoE_Helper/dist.
-It's optimized for Windows and a resolution of 1920x1080. To end the program simply click the "." key. The demo was tested ingame with the "Vietnamese" civilization, the user is notified when he needs to make houses.
-
+An execubale jar file is in the folder "AoE_Helper/dist". Ingame, the player is notified when he needs to make houses, also messages appear to guide the player so that he masters the "Fast Castle" build order. The demo was tested ingame with the "Vietnamese" civilization and a resolution of 1920x1080. If you are not ingame, the program shows the text "Not ingame". To end the program simply click the "." key.
+### Requirements
+- Windows
+- At least [JRE 1.8](https://www.java.com/de/download/)
 
 ## 🌈 Screenshots
 
@@ -32,11 +34,14 @@ Not ingame
 
 ## 🔨Development
 
+### Done
+- Show house image if player is two or less units away from max population
+
 ### WIP
-- "Build House" message (if pop + 2 >= max_pop)
+- Show messages to master the "Fast Castle" build order
 
 ### TODO
-- Show BOs and common strategies for civilizations
+- Show more BOs and common strategies for civilizations
 - Show amount of trade cards / fishing boats
 - Use point reading to guess when someone presses "age up" technologies
 - Add new hotkeys: Go to nearest stone/gold, produce continuously specific unit...

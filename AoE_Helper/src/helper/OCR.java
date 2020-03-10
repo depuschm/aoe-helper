@@ -8,11 +8,13 @@ import net.sourceforge.tess4j.Tesseract;
 import net.sourceforge.tess4j.TesseractException;
 
 public class OCR {
-	private final String LANGUAGE, CHARACTERS, FALSE, TRUE;
+	private final String LANGUAGE, FALSE, TRUE;
+	public final String CHARACTERS_NUMBERS, CHARACTERS_NUMBERS_AND_SLASH;
 	
 	public OCR() {
 		LANGUAGE = "eng";
-		CHARACTERS = "0123456789/";
+		CHARACTERS_NUMBERS = "0123456789";
+		CHARACTERS_NUMBERS_AND_SLASH = "0123456789/";
 		FALSE = "0";
 		TRUE = "1";
 	}
@@ -23,7 +25,7 @@ public class OCR {
 	 * For number recognition settings:
 	 * https://stackoverflow.com/questions/32755943/digit-recognition-with-tesseract-ocr-and-python
 	 */
-	public String recognize(BufferedImage image) {
+	public String recognize(BufferedImage image, String characters) {
 		
 		// creating file instance and referencing the file in its location
 		/*String imagePath = System.getProperty("user.dir") + "\\images\\";
@@ -39,7 +41,7 @@ public class OCR {
 		// This part is for number recognition only
 		/* ================================================================= */
 		// Limit the characters being seached for to numerics.
-		instance.setTessVariable("tessedit_char_whitelist", CHARACTERS);
+		instance.setTessVariable("tessedit_char_whitelist", characters);
 		
 		// Tesseract's Directed Acyclic Graph.
 		// Not necessary for number recognition.

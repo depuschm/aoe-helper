@@ -12,6 +12,7 @@ These technologies are used to develop this program:
 - [jnativehook](https://github.com/kwhat/jnativehook) (used for global keyboard listening)
 - [tess4j](https://github.com/nguyenq/tess4j) (used to recognize characters)
 - [json-simple](https://github.com/fangyidong/json-simple) (used to parse json files)
+- [marvinproject](https://github.com/gabrielarchanjo/marvinproject) (used for image processing)
 
 ## 🎮 Demo
 

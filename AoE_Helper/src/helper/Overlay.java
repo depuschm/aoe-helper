@@ -204,7 +204,8 @@ public class Overlay implements NativeKeyListener {
 	 * Setter for textToDisplay
 	 */
 	public void SetTextToDisplay(String text) {
-		textToDisplay = analyseText(text);
+		//textToDisplay = text;;
+		textToDisplay = analyseText(text); // TODO: analyseText doesn't work with textVillagers!
 		paintComponent.repaint();
 	}
 	
@@ -227,7 +228,7 @@ public class Overlay implements NativeKeyListener {
 			}
 			
 			// Add build order text
-			textBO = getTextFromJSONObject(darkAge, "" + pop);
+			textBO = getTextFromJSONObject(darkAge, "" + (pop - 1));
 		}
 		catch (Exception e) {
 			// Exception might happen either if / was not found or parsing was not successful

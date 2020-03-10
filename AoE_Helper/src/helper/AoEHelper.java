@@ -22,13 +22,16 @@ public class AoEHelper {
 				// This part is executed every x milliseconds
 				
 				// Create screen capture
-				BufferedImage image = screenCapture.captureImage();
+				BufferedImage imagePop = screenCapture.captureImage(PartialScreenCapture.popRectangle);
+				//BufferedImage imageVillagers = screenCapture.captureVillagersImage(PartialScreenCapture.villagersRectangle);
 				
 				// Recognize captured image
-				String text = ocr.recognize(image);
+				String textPop = ocr.recognize(imagePop, ocr.CHARACTERS_NUMBERS_AND_SLASH);
+				//String textVillagers = ocr.recognize(imageVillagers, ocr.CHARACTERS_NUMBERS);
 				
 				// Change text in overlay
-				overlay.SetTextToDisplay(text);
+				overlay.SetTextToDisplay(textPop);
+				//overlay.SetTextToDisplay(textVillagers);
 				//System.out.println(text);
 				
 				// Quit application if "quitApplication" is set to true

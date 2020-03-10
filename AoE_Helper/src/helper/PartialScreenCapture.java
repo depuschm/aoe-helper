@@ -143,7 +143,7 @@ public class PartialScreenCapture {
 		BufferedImage capturedImage = robot.createScreenCapture(captureRect);
 		MarvinImage image = new MarvinImage(capturedImage);
 		image = imagePostProcessing(image, captureRect);
-		MarvinImageIO.saveImage(image, "CapturedImage.png");
+		//MarvinImageIO.saveImage(image, "CapturedImage.png");
 		//saveImage(capturedImage);
 		//System.out.println("A partial screenshot captured!");
 		

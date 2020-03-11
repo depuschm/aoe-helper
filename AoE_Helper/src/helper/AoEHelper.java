@@ -10,7 +10,7 @@ public class AoEHelper {
 	public static void main(String[] args) {
 		// Create overlay, screen capture and OCR (optical character recognition) class to recognize captured images
 		Overlay overlay = new Overlay();
-		PartialScreenCapture screenCapture = new PartialScreenCapture();
+		PartialScreenCapture screenCapture = new PartialScreenCapture(true);
 		OCR ocr = new OCR();
 		
 		// This is the core part of the program (main loop)
@@ -22,17 +22,17 @@ public class AoEHelper {
 				// This part is executed every x milliseconds
 				
 				// Create screen capture
-				BufferedImage imagePop = screenCapture.captureImage(PartialScreenCapture.popRectangle);
-				//BufferedImage imageVillagers = screenCapture.captureImage(PartialScreenCapture.villagersRectangle);
+				BufferedImage imagePop = screenCapture.captureAndProcessImage(PartialScreenCapture.popRectangle);
+				BufferedImage imageVillagers = screenCapture.captureImage(PartialScreenCapture.villagersRectangle);
 				
 				// Recognize captured image
 				String textPop = ocr.recognize(imagePop, ocr.CHARACTERS_NUMBERS_AND_SLASH);
 				//String textVillagers = ocr.recognize(imageVillagers, ocr.CHARACTERS_NUMBERS);
+				String textVillagers = screenCapture.hashImageAndLookUpValue(imageVillagers);
 				
 				// Change text in overlay
-				overlay.SetTextToDisplay(textPop);
-				//overlay.SetTextToDisplay(textVillagers);
-				//System.out.println(text);
+				overlay.analyzePopText(textPop);
+				overlay.analyzeVillagersText(textVillagers);
 				
 				// Quit application if "quitApplication" is set to true
 				if (quitApplication) {

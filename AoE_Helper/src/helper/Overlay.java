@@ -1,5 +1,6 @@
 package helper;
 
+import java.awt.AWTException;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -7,8 +8,10 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.Robot;
 import java.awt.Toolkit;
 import java.awt.Window;
+import java.awt.event.KeyEvent;
 import java.awt.font.FontRenderContext;
 import java.awt.font.GlyphVector;
 import java.awt.image.BufferedImage;
@@ -43,18 +46,27 @@ import com.sun.jna.platform.win32.WinUser;
  */
 public class Overlay implements NativeKeyListener {
 	
-	private String textToDisplay, textBO;
+	private String textPop, textVillagers, textBO;
 	private JComponent paintComponent;
+	private Robot robot;
 	
 	private BufferedImage imageHouse;
 	private boolean houseNeeded;
 	private static JSONObject darkAge;
 	
 	public Overlay() {
-		textToDisplay = "Age of Empires";
+		textPop = "Age of Empires";
+		textVillagers = "";
 		textBO = "";
 		InitJNativeHook();
 		Window w = new Window(null);
+		
+		// Initialize robot
+		try {
+			robot = new Robot();
+		} catch (AWTException e1) {
+			e1.printStackTrace();
+		}
 		
 		// Load images
 		File resource = new File("data/images/house.png");
@@ -107,7 +119,8 @@ public class Overlay implements NativeKeyListener {
 	            int x = getWidth() / 2;
 	            int y = 20;
 	            
-	            drawTextWithBackground(g2, textToDisplay, x, y);
+	            drawTextWithBackground(g2, textPop, x, y);
+	            drawTextWithBackground(g2, textVillagers, x-30, y);
 	            drawTextWithBackground(g2, textBO, x, y + 20);
 	            
 	            // Draw image of house if almost housed
@@ -203,18 +216,21 @@ public class Overlay implements NativeKeyListener {
 	/**
 	 * Setter for textToDisplay
 	 */
-	public void SetTextToDisplay(String text) {
-		//textToDisplay = text;;
-		textToDisplay = analyseText(text); // TODO: analyseText doesn't work with textVillagers!
+	public void analyzeVillagersText(String text) {
+		// Add build order text
+		int villagers = Integer.parseInt(text);
+		textBO = getTextFromJSONObject(darkAge, "" + villagers);
+		
+		// Show text
+		textVillagers = text;
 		paintComponent.repaint();
 	}
 	
-	private String analyseText(String text) {
+	public void analyzePopText(String text) {
 		String[] textSplit = text.split("/");
 		
 		// Reset variables
 		houseNeeded = false;
-		textBO = "";
 		
 		// Verify that split was successful
 		try {
@@ -226,9 +242,6 @@ public class Overlay implements NativeKeyListener {
 			if (pop + 2 >= pop_max) {
 				houseNeeded = true;
 			}
-			
-			// Add build order text
-			textBO = getTextFromJSONObject(darkAge, "" + (pop - 1));
 		}
 		catch (Exception e) {
 			// Exception might happen either if / was not found or parsing was not successful
@@ -236,7 +249,16 @@ public class Overlay implements NativeKeyListener {
 			text = "Not ingame";
 		}
 		
-		return text;
+		// Show text
+		SetTextToDisplay(text);
+	}
+	
+	/**
+	 * Default text panel is textPop. This method is also used to display debug information during hash generation.
+	 */
+	public void SetTextToDisplay(String text) {
+		textPop = text;
+		paintComponent.repaint();
 	}
 	
 	/**
@@ -269,6 +291,15 @@ public class Overlay implements NativeKeyListener {
 		}
 
 		GlobalScreen.addNativeKeyListener(this);
+	}
+	
+	/**
+	 * This method simulates any key press for example "KeyEvent.VK_A".
+	 * Also simulate a key release, else AoE won't start the next key press.
+	 */
+	public void SimulateKeyPress(int ev) {
+		 robot.keyPress(ev);
+		 robot.keyRelease(ev);
 	}
 	
 	/**

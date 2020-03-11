@@ -13,6 +13,7 @@ These technologies are used to develop this program:
 - [tess4j](https://github.com/nguyenq/tess4j) (used to recognize characters)
 - [json-simple](https://github.com/fangyidong/json-simple) (used to parse json files)
 - [marvinproject](https://github.com/gabrielarchanjo/marvinproject) (used for image processing)
+- [ini4j](https://github.com/facebookarchive/ini4j) (used to save/load settings)
 
 ## 🎮 Demo
 

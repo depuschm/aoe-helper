@@ -246,17 +246,17 @@ public class ImageProcessing {
 		}
 		
 		// Apply floodfill on every (not visited) pixel
+		// Note: color is not set here, only regions array is filled with values
 		for (int y = 0; y < h; y++) {
 			for (int x = 0; x < w; x++) {
 				if (regions[x][y] == -1) {
 					Color c = new Color(image.getRGB(x, y));
-					//flood(regions, image, x, y, c, Color.black, 30);
-					floodFillImage(image, x, y, Color.black, regions, threshold);
+					floodFillImage(image, x, y, color, regions, threshold);
 				}
 			}
 		}
 		
-		// Debug: Print regions
+		// Set color to regions (optional: print regions)
 		for (int y = 0; y < h; y++) {
 			for (int x = 0; x < w; x++) {
 				// If connected with at least "minimalPixels" pixels remove color
@@ -331,8 +331,8 @@ public class ImageProcessing {
 	    Color currentColor = new Color(image.getRGB(x, y));
 	    Color startColor = new Color(srcColor);
 	    
-		if (!(Math.abs(currentColor.getGreen() - startColor.getGreen()) < threshold
-			&& Math.abs(currentColor.getRed() - startColor.getRed()) < threshold
+		if (!(Math.abs(currentColor.getRed() - startColor.getRed()) < threshold
+			&& Math.abs(currentColor.getGreen() - startColor.getGreen()) < threshold
 			&& Math.abs(currentColor.getBlue() - startColor.getBlue()) < threshold)) {
 			return false;
 		}

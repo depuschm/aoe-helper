@@ -23,7 +23,7 @@ public class AoEHelper {
 				
 				// Create screen capture
 				BufferedImage imagePop = screenCapture.captureImage(PartialScreenCapture.popRectangle);
-				//BufferedImage imageVillagers = screenCapture.captureVillagersImage(PartialScreenCapture.villagersRectangle);
+				//BufferedImage imageVillagers = screenCapture.captureImage(PartialScreenCapture.villagersRectangle);
 				
 				// Recognize captured image
 				String textPop = ocr.recognize(imagePop, ocr.CHARACTERS_NUMBERS_AND_SLASH);

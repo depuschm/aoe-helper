@@ -1,5 +1,5 @@
 [{
-    "title": "BO: Fast Castle - Boom",
+    "title": "Fast Castle - Boom",
 	"triggers": {
         "population": {
 			"dark_age": {
@@ -11,7 +11,6 @@
 				"16": "Now send the next 2 villagers to boar.",
 				"17": "Also move 2 villager from the boar to build farms.",
 				"18": "Now send more villagers to wood, until you have 9 villagers split between 2 lumber camps.",
-				"22": "Now build another house.",
 				"23": "Now send the last 3 villagers to gold. Also start moving villagers from sheep to make farms.",
 				"26": "Now research loom, and then click Feudal with 27 population."
 			},

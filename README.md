@@ -17,7 +17,7 @@ These technologies are used to develop this program:
 
 ## 🎮 Demo
 
-An execubale jar file is in the folder "AoE_Helper/dist". Ingame, the player is notified when he needs to make houses, also messages appear to guide the player so that he masters the "Fast Castle" build order. The demo was tested ingame with the "Vietnamese" civilization and a resolution of 1920x1080. If you are not ingame, the program shows the text "Not ingame". To end the program simply click the "." key.
+An execubale jar file is in the folder "AoE_Helper/dist". Ingame, the player is notified when he needs to make houses, also messages appear to guide the player so that he masters the "Fast Castle" build order. The demo was tested ingame with the "Vietnamese" civilization and a resolution of 1920x1080. If you are not ingame, the program shows the text "Not ingame". To end the program simply click the "." key or use the GUI.
 ### Requirements
 - Windows
 - At least [JRE 1.8](https://www.java.com/de/download/)
@@ -25,13 +25,18 @@ An execubale jar file is in the folder "AoE_Helper/dist". Ingame, the player is 
 ## 🌈 Screenshots
 
 Ingame
-<p align="center">
+<p align="left">
   <img src="https://raw.githubusercontent.com/rayo3/aoe_helper/master/AoE_Helper/screenshots/ingame.jpg">
 </p>
 
 Not ingame
-<p align="center">
+<p align="left">
   <img src="https://raw.githubusercontent.com/rayo3/aoe_helper/master/AoE_Helper/screenshots/not_ingame.jpg">
+</p>
+
+GUI
+<p align="left">
+  <img src="https://raw.githubusercontent.com/rayo3/aoe_helper/master/AoE_Helper/screenshots/gui.png">
 </p>
 
 ## 🔨Development

@@ -9,9 +9,7 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Robot;
-import java.awt.Toolkit;
 import java.awt.Window;
-import java.awt.event.KeyEvent;
 import java.awt.font.FontRenderContext;
 import java.awt.font.GlyphVector;
 import java.awt.image.BufferedImage;
@@ -39,6 +37,9 @@ import com.sun.jna.Native;
 import com.sun.jna.platform.win32.User32;
 import com.sun.jna.platform.win32.WinDef;
 import com.sun.jna.platform.win32.WinDef.HWND;
+
+import gui.AoEHelperGUI;
+
 import com.sun.jna.platform.win32.WinUser;
 
 /**
@@ -46,18 +47,22 @@ import com.sun.jna.platform.win32.WinUser;
  */
 public class Overlay implements NativeKeyListener {
 	
-	private String textPop, textVillagers, textBO;
+	private String textMain, textPop, textVillagers, textBO;
 	private JComponent paintComponent;
 	private Robot robot;
+	public boolean clearGUI;
+	public AoEHelperGUI gui;
 	
 	private BufferedImage imageHouse;
 	private boolean houseNeeded;
 	private static JSONObject darkAge;
 	
 	public Overlay() {
-		textPop = "Age of Empires";
+		textMain = "";
+		textPop = "";
 		textVillagers = "";
 		textBO = "";
+		
 		InitJNativeHook();
 		Window w = new Window(null);
 		
@@ -76,25 +81,8 @@ public class Overlay implements NativeKeyListener {
             e.printStackTrace();
         }
         
-        // Load Text
-        JSONParser jsonParser = new JSONParser();
-        try (FileReader reader = new FileReader("data/text/bo_fastcastle-boom.json")) {
-        	//Read JSON file
-        	Object obj = jsonParser.parse(reader);
-        	
-        	JSONArray list = (JSONArray) obj;
-        	//System.out.println(list);
-        	
-        	//Get json object within list
-        	list.forEach(txt -> parseJSONObject((JSONObject) txt));
-            
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        // Load build order text
+        //loadBuildOrderText();
 	    
 	    /**
 	     * This sets the background of the window to be transparent.
@@ -111,22 +99,31 @@ public class Overlay implements NativeKeyListener {
 	        	super.paintComponent(g);
 	        	Graphics2D g2 = (Graphics2D) g;
 	        	
-	            //g.fillRect(0, getHeight() / 2 - 10, getWidth(), 20);
-	            //g.fillRect(getWidth() / 2 - 10, 0, 20, getHeight());
-	            //g.drawString("Hello World", 100, 100);
-	            
-	            // Draw text
-	            int x = getWidth() / 2;
-	            int y = 20;
-	            
-	            drawTextWithBackground(g2, textPop, x, y);
-	            drawTextWithBackground(g2, textVillagers, x-30, y);
-	            drawTextWithBackground(g2, textBO, x, y + 20);
-	            
-	            // Draw image of house if almost housed
-	            if (houseNeeded)
-	            	g2.drawImage(imageHouse, 405, 0, 100, 100, this);
-	            //repaint();
+	        	if (AoEHelperGUI.active && gui != null) {
+	        		//g.fillRect(0, getHeight() / 2 - 10, getWidth(), 20);
+		            //g.fillRect(getWidth() / 2 - 10, 0, 20, getHeight());
+		            //g.drawString("Hello World", 100, 100);
+		            
+		            // Draw text
+		            int x = getWidth() / 2;
+		            int y = 20;
+		            
+		            drawTextWithBackground(g2, textMain, x, y);
+		            
+		            if (AoEHelperGUI.rdbtnShowDebugText.isSelected()) {
+		            	drawTextWithBackground(g2, textPop, x, y);
+			            drawTextWithBackground(g2, textVillagers, x-30, y);
+		            }
+		            
+		            if (AoEHelperGUI.rdbtnShowBuildOrder.isSelected()) {
+		            	drawTextWithBackground(g2, textBO, x, y + 20);
+		            }
+		            
+		            // Draw image of house if almost housed
+		            if (AoEHelperGUI.rdbtnShowHouseImage.isSelected() && houseNeeded)
+		            	g2.drawImage(imageHouse, 405, 0, 100, 100, this);
+		            //repaint();
+	        	}
 	        }
 
 	        public Dimension getPreferredSize() {
@@ -145,38 +142,61 @@ public class Overlay implements NativeKeyListener {
 	    setTransparent(w);
 	}
 	
-	 private static void parseJSONObject(JSONObject json) {
-		 // Get triggers object within list
-		 JSONObject triggers = (JSONObject) json.get("triggers");
-		 JSONObject population = (JSONObject) triggers.get("population");
-		 darkAge = (JSONObject) population.get("dark_age");
-		 
-		// Print first trigger
-	    //String trigger = getTextFromJSONObject(darkAge, "3");
-	    //System.out.println(trigger);
-	 }
-	 
-	 private static String getTextFromJSONObject(JSONObject jsonObject, String key) {
-		 if (jsonObject.containsKey(key)) {
-			 return (String) jsonObject.get(key);
-		 }
-		 return "";
-	 }
+	public void loadBuildOrderText(String name) {
+		JSONParser jsonParser = new JSONParser();
+        try (FileReader reader = new FileReader("data/text/" + name + ".json")) {
+        	//Read JSON file
+        	Object obj = jsonParser.parse(reader);
+        	
+        	JSONArray list = (JSONArray) obj;
+        	//System.out.println(list);
+        	
+        	//Get json object within list
+        	list.forEach(txt -> parseJSONObject((JSONObject) txt));
+            
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+	}
 	
+	private static void parseJSONObject(JSONObject json) {
+		// Get triggers object within list
+		JSONObject triggers = (JSONObject) json.get("triggers");
+		JSONObject population = (JSONObject) triggers.get("population");
+		darkAge = (JSONObject) population.get("dark_age");
+		
+		// Print first trigger
+		//String trigger = getTextFromJSONObject(darkAge, "3");
+		//System.out.println(trigger);
+	}
+	 
+	private static String getTextFromJSONObject(JSONObject jsonObject, String key) {
+		if (jsonObject.containsKey(key)) {
+			return (String) jsonObject.get(key);
+		}
+		return "";
+	}
+
 	/**
 	 * Draws a black text with a white background behind to highlight the text
 	 */
 	private void drawTextWithBackground(Graphics2D g2, String text, int x, int y) {
-		// Draw text background
-		Rectangle bounds = getStringBounds(g2, text, x, y);
-        extendRectangle(bounds, 3, 3);
-        
-        g2.setColor(Color.WHITE);
-        g2.fill(bounds);
-        
-        // TODO: Fix flickering, text causes flickering, maybe just draw if text really changed (use textPrevious)
-        g2.setColor(Color.BLACK);
-        g2.drawString(text, x, y);
+		if (!text.isEmpty()) {
+			// Draw text background
+			Rectangle bounds = getStringBounds(g2, text, x, y);
+	        extendRectangle(bounds, 3, 3);
+	        
+	        g2.setColor(Color.WHITE);
+	        g2.fill(bounds);
+	        
+	        // TODO: Fix flickering, text causes flickering, maybe just draw if text really changed (use textPrevious)
+	        g2.setColor(Color.BLACK);
+	        g2.drawString(text, x, y);
+		}
 	}
 	
 	/**
@@ -221,6 +241,13 @@ public class Overlay implements NativeKeyListener {
 		int villagers = Integer.parseInt(text);
 		textBO = getTextFromJSONObject(darkAge, "" + villagers);
 		
+		// Set main text
+		if (villagers == -1) {
+			textMain = "Not ingame";
+		} else {
+			textMain = "";
+		}
+		
 		// Show text
 		textVillagers = text;
 		paintComponent.repaint();
@@ -246,7 +273,7 @@ public class Overlay implements NativeKeyListener {
 		catch (Exception e) {
 			// Exception might happen either if / was not found or parsing was not successful
 			//System.err.println(e.getMessage());
-			text = "Not ingame";
+			text = "";
 		}
 		
 		// Show text
@@ -258,6 +285,13 @@ public class Overlay implements NativeKeyListener {
 	 */
 	public void SetTextToDisplay(String text) {
 		textPop = text;
+		paintComponent.repaint();
+	}
+	
+	/**
+	 * Clears the entire GUI so that nothing is visible. Called when program is stopped.
+	 */
+	public void clearGUI() {
 		paintComponent.repaint();
 	}
 	

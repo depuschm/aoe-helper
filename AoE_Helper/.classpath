@@ -31,5 +31,6 @@
 	<classpathentry kind="lib" path="lib/jnativehook-2.1.0.jar"/>
 	<classpathentry kind="lib" path="lib/json-simple-1.1.1.jar"/>
 	<classpathentry kind="lib" path="marvin/framework/marvin_1.5.5.jar"/>
+	<classpathentry kind="lib" path="lib/ini4j-0.5.4.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

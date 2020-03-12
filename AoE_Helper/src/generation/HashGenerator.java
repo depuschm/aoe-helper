@@ -13,22 +13,29 @@ import helper.PartialScreenCapture;
  * Use this class to capture and save images automatically.
  * After that, hashes are generated for images which are used for image recognition.
  * 
- * Presets: Choose pop 500. Type "ninjalui" and "aegis" as cheat.
+ * Presets: Choose pop 500. Make sure your hotkey for town center is "D" and Villager "A". Type "ninjalui" and "aegis" as cheat.
  *          Use huns to not make houses and delete all but your town center and then call this script.
  */
 public class HashGenerator {
+	private static Overlay overlay;
+	private static PartialScreenCapture screenCapture;
+	
+	private static final int MILLISECONDS = 1000;
 	
 	public static void main(String[] args) {
 		// Create overlay and screen capture
-		Overlay overlay = new Overlay();
-		PartialScreenCapture screenCapture = new PartialScreenCapture(false);
+		overlay = new Overlay();
+		screenCapture = new PartialScreenCapture(false);
 		
 		// Simulate key press to select town center
 		overlay.SimulateKeyPress(KeyEvent.VK_D);
 		overlay.SetTextToDisplay("" + screenCapture.currentImage);
 		
 		// This is the core part of the program (main loop)
-		int milliseconds = 1000;
+		runMainLoop();
+	}
+	
+	public static void runMainLoop() {
 		Timer timer = new Timer();
 		TimerTask myTask = new TimerTask() {
 			@Override
@@ -61,6 +68,6 @@ public class HashGenerator {
 				screenCapture.currentImage++;
 			}
 		};
-		timer.schedule(myTask, milliseconds, milliseconds);
+		timer.schedule(myTask, MILLISECONDS, MILLISECONDS);
 	}
 }

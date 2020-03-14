@@ -328,13 +328,16 @@ public class Overlay implements NativeKeyListener {
 		paintComponent.repaint();
 	}
 	
-	public void analyzeAge(String text) {
+	public void analyzeAge(String text, boolean ageAdvancing) {
 		int i = Integer.parseInt(text);
 		
 		if (i == -1) {
 			text = "";
 		} else {
-			text = ageNames[i] + " Age";
+			String textAdvancing = "";
+			if (ageAdvancing) textAdvancing = " (Advancing)";
+			
+			text = ageNames[i] + " Age" + textAdvancing;
 			lastRecognizedAge = text;
 		}
 		

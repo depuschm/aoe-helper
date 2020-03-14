@@ -26,7 +26,7 @@ import marvin.image.MarvinImage;
  */
 public class PartialScreenCapture {
 
-	public static Rectangle popRectangle, villagersRectangle, civilizationRectangle, ageRectangle;
+	public static Rectangle popRectangle, villagersRectangle, civilizationRectangle, ageRectangle, ageAdvancingRectangle;
 	private ImageProcessing imageProcessing;
 	private Dimension screenSize;
 	private Robot robot;
@@ -61,6 +61,7 @@ public class PartialScreenCapture {
 		//civilizationRectangle = new Rectangle(1610, 15, 30, 30);
 		civilizationRectangle = new Rectangle(1624, 20, 2, 26);
 		ageRectangle = new Rectangle(600, 20, 2, 26);
+		ageAdvancingRectangle = new Rectangle(626, 38, 1, 1);
 	}
 
 	/**
@@ -226,5 +227,18 @@ public class PartialScreenCapture {
 		}
 		
 		return "" + value;
+	}
+	
+	
+	/**
+	 * Expects an 1x1 image. Checks if the single pixel of the image is red enough.
+	 * @param threshold
+	 */
+	public boolean checkIfRed(BufferedImage image, int threshold) {
+		Color color = new Color(image.getRGB(0, 0));
+		if (color.getRed() >= threshold) {
+			return true;
+		}
+		return false;
 	}
 }

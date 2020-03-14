@@ -7,7 +7,6 @@ import java.awt.Rectangle;
 import java.awt.Robot;
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
-import java.beans.XMLEncoder;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -16,9 +15,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
 
 import javax.imageio.ImageIO;
 
@@ -30,34 +26,38 @@ import marvin.image.MarvinImage;
  */
 public class PartialScreenCapture {
 
-	public static Rectangle popRectangle, villagersRectangle;
+	public static Rectangle popRectangle, villagersRectangle, civilizationRectangle;
 	private ImageProcessing imageProcessing;
 	private Dimension screenSize;
 	private Robot robot;
 	public int currentImage;
-	public HashMap<Integer, Integer> hashmap;
+	public HashMap<Integer, Integer> hashmapVillagers, hashmapCivilizations;
 
-	public PartialScreenCapture(boolean loadHashmap) {
+	public PartialScreenCapture(boolean loadHashmaps) {
 		try {
 			robot = new Robot();
 		} catch (AWTException e) {
 			e.printStackTrace();
 		}
 		
-		if (loadHashmap) hashmap = loadHashMap("villagers");
-		else hashmap = new HashMap<>();
+		if (loadHashmaps) {
+			hashmapVillagers = loadHashMap("villagers");
+			hashmapCivilizations = loadHashMap("civilizations");
+		}
+		else {
+			hashmapVillagers = new HashMap<>();
+			hashmapCivilizations = new HashMap<>();
+		}
+		
 		imageProcessing = new ImageProcessing();
 		
 		screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		
+		// Initialize rectangles (part of screen to capture)
 		popRectangle = new Rectangle(453, 22, 61, 16);
-		//villagersRectangle = new Rectangle(433, 39, 11, 8);
-		//villagersRectangle = new Rectangle(433, 38, 14, 10);
-		//villagersRectangle = new Rectangle(437, 39, 8, 8);
-		
-		//villagersRectangle = new Rectangle(433, 39, 12, 8);
-		
-		//villagersRectangle = new Rectangle(424, 39, 20, 8); // exact 100
-		villagersRectangle = new Rectangle(423, 39, 22, 8); // correctly recognized 100
+		villagersRectangle = new Rectangle(423, 39, 22, 8);
+		//civilizationRectangle = new Rectangle(1610, 15, 30, 30);
+		civilizationRectangle = new Rectangle(1624, 20, 2, 26);
 	}
 
 	/**
@@ -79,17 +79,17 @@ public class PartialScreenCapture {
 	/**
 	 * Debug method to generate images from resource panel
 	 */
-	public BufferedImage captureAndSaveImage(Rectangle captureRect) {
+	public BufferedImage captureAndSaveImage(Rectangle captureRect, String folder) {
 		// Capture and save image
 		BufferedImage capturedImage = robot.createScreenCapture(captureRect);
-		saveImage(capturedImage);
+		saveImage(capturedImage, folder);
 		
 		return capturedImage;
 	}
 	
-	private void saveImage(BufferedImage image) {
+	private void saveImage(BufferedImage image, String folder) {
 		String format = "png";
-		String fileName = "data/numbers/images/" + currentImage + "." + format;
+		String fileName = "data/numbers/images/" + folder + "/" + currentImage + "." + format;
         
 		try {
 			ImageIO.write(image, format, new File(fileName));
@@ -104,7 +104,7 @@ public class PartialScreenCapture {
 	 * Threshold should be as low as possible so that only really white parts are considered for the hash
 	 * but it should still be high enough to have no hash collisions
 	 */
-	public int generateHash(BufferedImage image) {
+	public int generateHashWhite(BufferedImage image) {
 		// Simple hash: Only use white pixels and add the together according to the formula y*w + x
 		int hash = 0;
 		Color currentColor;
@@ -130,8 +130,21 @@ public class PartialScreenCapture {
 		return hash;
 	}
 	
-	public void addHashToHashmap(int hash) {
-		hashmap.put(hash, currentImage);
+	public int generateHash(BufferedImage image) {
+		// Simple hash: Only use white pixels and add the together according to the formula y*w + x
+		// image.getRGB(x, y) might have collisions since the order of colors is not important but very rarely
+		int hash = 0;
+		int w = image.getWidth();
+		int h = image.getHeight();
+		
+		for (int y = 0; y < h; y++) {
+			for (int x = 0; x < w; x++) {
+				hash += image.getRGB(x, y);
+				//hash += currentColor.getRed() + currentColor.getGreen() + currentColor.getBlue() * (y*w + x);
+			}
+		}
+		
+		return hash;
 	}
 	
 	/**
@@ -139,7 +152,7 @@ public class PartialScreenCapture {
 	 *       https://beginnersbook.com/2013/12/how-to-serialize-hashmap-in-java/
 	 * @throws FileNotFoundException 
 	 */
-	public void saveHashMap(String name) {
+	public void saveHashMap(HashMap<Integer, Integer> hashmap, String name) {
 		String format = "txt";
 		String fileName = "data/numbers/key-value/" + name + "." + format;
 		
@@ -193,8 +206,15 @@ public class PartialScreenCapture {
 	 * Generates a hash from an image which serves as a key to lookup the corresponding
 	 * value in the hashmap
 	 */
-	public String hashImageAndLookUpValue(BufferedImage image) {
-		int hash = generateHash(image);
+	public String hashImageAndLookUpValue(BufferedImage image, HashMap<Integer, Integer> hashmap, int hashMethod) {
+		int hash;
+		if (hashMethod == 1) {
+			hash = generateHashWhite(image);
+		}
+		else {
+			hash = generateHash(image);
+		}
+		
 		Integer value = hashmap.get(hash);
 		//System.out.println("-> key: " + hash + " & Value: " + value);
 		

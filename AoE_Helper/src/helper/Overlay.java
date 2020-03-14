@@ -47,7 +47,7 @@ import com.sun.jna.platform.win32.WinUser;
  */
 public class Overlay implements NativeKeyListener {
 	
-	private String textMain, textPop, textVillagers, textBO;
+	private String textMain, textPop, textVillagers, textCivilization, textBO;
 	private JComponent paintComponent;
 	private Robot robot;
 	public boolean clearGUI;
@@ -55,15 +55,19 @@ public class Overlay implements NativeKeyListener {
 	
 	private BufferedImage imageHouse;
 	private boolean houseNeeded;
+	private String[] civilizationNames;
 	private static JSONObject darkAge;
 	
 	public Overlay() {
 		textMain = "";
 		textPop = "";
 		textVillagers = "";
+		textCivilization = "";
 		textBO = "";
 		
-		InitJNativeHook();
+		InitCivilizationNames();
+		
+		InitJNativeHook(this);
 		Window w = new Window(null);
 		
 		// Initialize robot
@@ -113,6 +117,7 @@ public class Overlay implements NativeKeyListener {
 		            if (AoEHelperGUI.rdbtnShowDebugText.isSelected()) {
 		            	drawTextWithBackground(g2, textPop, x, y);
 			            drawTextWithBackground(g2, textVillagers, x-30, y);
+			            drawTextWithBackground(g2, textCivilization, x-100, y + 20);
 		            }
 		            
 		            if (AoEHelperGUI.rdbtnShowBuildOrder.isSelected()) {
@@ -123,6 +128,13 @@ public class Overlay implements NativeKeyListener {
 		            if (AoEHelperGUI.rdbtnShowHouseImage.isSelected() && houseNeeded)
 		            	g2.drawImage(imageHouse, 405, 0, 100, 100, this);
 		            //repaint();
+	        	}
+	        	else if (AoEHelper.showGenerationOverlay) {
+	        		// This part is only executed during hash generation to show the current image
+	        		int x = getWidth() / 2;
+		            int y = 20;
+		            
+	        		drawTextWithBackground(g2, textPop, x, y);
 	        	}
 	        }
 
@@ -140,6 +152,16 @@ public class Overlay implements NativeKeyListener {
 	    w.setAlwaysOnTop(true);
 	    
 	    setTransparent(w);
+	}
+	
+	private void InitCivilizationNames() {
+		civilizationNames = new String[] {
+			"Aztecs", "Berbers", "Britons", "Bulgarians", "Burmese", "Byzantines", "Celts", "Chinese",
+			"Cumans", "Ethiopians", "Franks", "Goths", "Huns", "Incas", "Indians", "Italians",
+			"Japanese", "Khmer", "Koreans", "Lithuanians", "Magyars", "Malay", "Malians", "Mayans",
+			"Mongols", "Persians", "Portuguese", "Saracens", "Slavs", "Spanish", "Tatars", "Teutons",
+			"Turks", "Vietnamese", "Vikings"
+		};
 	}
 	
 	public void loadBuildOrderText(String name) {
@@ -243,6 +265,7 @@ public class Overlay implements NativeKeyListener {
 		
 		// Set main text
 		if (villagers == -1) {
+			text = "";
 			textMain = "Not ingame";
 		} else {
 			textMain = "";
@@ -280,6 +303,20 @@ public class Overlay implements NativeKeyListener {
 		SetTextToDisplay(text);
 	}
 	
+	public void analyzeCivilization(String text) {
+		int i = Integer.parseInt(text);
+		
+		if (i == -1) {
+			text = "";
+		} else {
+			text = civilizationNames[i];
+		}
+		
+		// Show text
+		textCivilization = text;
+		paintComponent.repaint();
+	}
+	
 	/**
 	 * Default text panel is textPop. This method is also used to display debug information during hash generation.
 	 */
@@ -304,7 +341,7 @@ public class Overlay implements NativeKeyListener {
 	 * Logging removal from:
 	 * https://stackoverflow.com/questions/30560212/how-to-remove-the-logging-data-from-jnativehook-library
 	 */
-	private void InitJNativeHook() {
+	public void InitJNativeHook(NativeKeyListener listener) {
 		// 1. Get rid of logging
 		// Clear previous logging configurations.
 		LogManager.getLogManager().reset();
@@ -324,7 +361,7 @@ public class Overlay implements NativeKeyListener {
 			System.exit(1);
 		}
 
-		GlobalScreen.addNativeKeyListener(this);
+		GlobalScreen.addNativeKeyListener(listener);
 	}
 	
 	/**

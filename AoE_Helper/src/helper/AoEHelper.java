@@ -7,7 +7,7 @@ import java.util.TimerTask;
 import gui.AoEHelperGUI;
 
 public class AoEHelper {
-	public static boolean quitApplication;
+	public static boolean quitApplication, showGenerationOverlay;
 	public static float version = 1.0f;
 	
 	private static Overlay overlay;
@@ -42,15 +42,18 @@ public class AoEHelper {
 					// Create screen capture
 					BufferedImage imagePop = screenCapture.captureAndProcessImage(PartialScreenCapture.popRectangle);
 					BufferedImage imageVillagers = screenCapture.captureImage(PartialScreenCapture.villagersRectangle);
+					BufferedImage imageCivilization = screenCapture.captureImage(PartialScreenCapture.civilizationRectangle);
 					
 					// Recognize captured image
 					String textPop = ocr.recognize(imagePop, ocr.CHARACTERS_NUMBERS_AND_SLASH);
 					//String textVillagers = ocr.recognize(imageVillagers, ocr.CHARACTERS_NUMBERS);
-					String textVillagers = screenCapture.hashImageAndLookUpValue(imageVillagers);
+					String textVillagers = screenCapture.hashImageAndLookUpValue(imageVillagers, screenCapture.hashmapVillagers, 1);
+					String civilization = screenCapture.hashImageAndLookUpValue(imageCivilization, screenCapture.hashmapCivilizations, 0);
 					
 					// Change text in overlay
 					overlay.analyzePopText(textPop);
 					overlay.analyzeVillagersText(textVillagers);
+					overlay.analyzeCivilization(civilization);
 				}
 				else {
 					overlay.clearGUI();

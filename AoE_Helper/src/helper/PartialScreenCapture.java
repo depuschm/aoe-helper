@@ -26,12 +26,12 @@ import marvin.image.MarvinImage;
  */
 public class PartialScreenCapture {
 
-	public static Rectangle popRectangle, villagersRectangle, civilizationRectangle;
+	public static Rectangle popRectangle, villagersRectangle, civilizationRectangle, ageRectangle;
 	private ImageProcessing imageProcessing;
 	private Dimension screenSize;
 	private Robot robot;
 	public int currentImage;
-	public HashMap<Integer, Integer> hashmapVillagers, hashmapCivilizations;
+	public HashMap<Integer, Integer> hashmapVillagers, hashmapCivilizations, hashmapAges;
 
 	public PartialScreenCapture(boolean loadHashmaps) {
 		try {
@@ -43,10 +43,12 @@ public class PartialScreenCapture {
 		if (loadHashmaps) {
 			hashmapVillagers = loadHashMap("villagers");
 			hashmapCivilizations = loadHashMap("civilizations");
+			hashmapAges = loadHashMap("ages");
 		}
 		else {
 			hashmapVillagers = new HashMap<>();
 			hashmapCivilizations = new HashMap<>();
+			hashmapAges = new HashMap<>();
 		}
 		
 		imageProcessing = new ImageProcessing();
@@ -58,6 +60,7 @@ public class PartialScreenCapture {
 		villagersRectangle = new Rectangle(423, 39, 22, 8);
 		//civilizationRectangle = new Rectangle(1610, 15, 30, 30);
 		civilizationRectangle = new Rectangle(1624, 20, 2, 26);
+		ageRectangle = new Rectangle(600, 20, 2, 26);
 	}
 
 	/**

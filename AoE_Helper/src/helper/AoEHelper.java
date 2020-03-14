@@ -43,17 +43,20 @@ public class AoEHelper {
 					BufferedImage imagePop = screenCapture.captureAndProcessImage(PartialScreenCapture.popRectangle);
 					BufferedImage imageVillagers = screenCapture.captureImage(PartialScreenCapture.villagersRectangle);
 					BufferedImage imageCivilization = screenCapture.captureImage(PartialScreenCapture.civilizationRectangle);
+					BufferedImage imageAge = screenCapture.captureImage(PartialScreenCapture.ageRectangle);
 					
 					// Recognize captured image
 					String textPop = ocr.recognize(imagePop, ocr.CHARACTERS_NUMBERS_AND_SLASH);
 					//String textVillagers = ocr.recognize(imageVillagers, ocr.CHARACTERS_NUMBERS);
 					String textVillagers = screenCapture.hashImageAndLookUpValue(imageVillagers, screenCapture.hashmapVillagers, 1);
 					String civilization = screenCapture.hashImageAndLookUpValue(imageCivilization, screenCapture.hashmapCivilizations, 0);
+					String age = screenCapture.hashImageAndLookUpValue(imageAge, screenCapture.hashmapAges, 0);
 					
 					// Change text in overlay
 					overlay.analyzePopText(textPop);
 					overlay.analyzeVillagersText(textVillagers);
 					overlay.analyzeCivilization(civilization);
+					overlay.analyzeAge(age);
 				}
 				else {
 					overlay.clearGUI();

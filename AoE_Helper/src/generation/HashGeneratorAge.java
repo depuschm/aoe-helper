@@ -25,13 +25,12 @@ import helper.Overlay;
 import helper.PartialScreenCapture;
 
 /**
- * Use this class to capture and save civilization images.
+ * Use this class to capture and save age images.
  * After that, hashes are generated for images which are used for image recognition.
  * 
- * Presets: Start a game with 8 players with different civilizations (you might create a scenario with 8 players so you not
- * 			need to set civilizations manually). Press "L" to capture an image. Switch between players with "CTRL + Shift + F1-F8".
+ * Presets: Type "ninjalui" and "aegis" as cheat.
  */
-public class HashGeneratorCivilization {
+public class HashGeneratorAge {
 	private static Overlay overlay;
 	private static PartialScreenCapture screenCapture;
 	
@@ -47,12 +46,12 @@ public class HashGeneratorCivilization {
 		screenCapture = new PartialScreenCapture(false);
 		
 		// Add key listener
-		KeyListenerCivilization keyListener = new KeyListenerCivilization();
+		KeyListenerAge keyListener = new KeyListenerAge();
 		overlay.InitJNativeHook(keyListener);
 		
 		// This is the core part of the program (main loop)
-		//generateHashmapByCapturingImages("civilizations");
-		generateHashmapByStoredImages("civilizations");
+		//generateHashmapByCapturingImages("ages");
+		generateHashmapByStoredImages("ages");
 	}
 	
 	/**
@@ -72,18 +71,18 @@ public class HashGeneratorCivilization {
 				
 				if (pressedKey) {
 					// Capture and save image
-					BufferedImage image = screenCapture.captureAndSaveImage(PartialScreenCapture.civilizationRectangle, name);
+					BufferedImage image = screenCapture.captureAndSaveImage(PartialScreenCapture.ageRectangle, name);
 					
 					// Load image from file
-					image = screenCapture.captureAndSaveImage(PartialScreenCapture.civilizationRectangle, name);
+					image = screenCapture.captureAndSaveImage(PartialScreenCapture.ageRectangle, name);
 					
 					// Generate and add hash from captured image and add it to hashmap
 					int hash = screenCapture.generateHash(image);
-					screenCapture.hashmapCivilizations.put(hash, screenCapture.currentImage);
+					screenCapture.hashmapAges.put(hash, screenCapture.currentImage);
 					
-					// Quit application if "quitApplication" is set to true or we if we captured 35 images.
+					// Quit application if "quitApplication" is set to true or we if we captured 4 images.
 					// Debug stop: We also stop if currentImage+1 != hashmap.size() because there was a hash collision.
-					collision = screenCapture.currentImage + 1 != screenCapture.hashmapCivilizations.size();
+					collision = screenCapture.currentImage + 1 != screenCapture.hashmapAges.size();
 					if (collision) System.out.println("Collision, change hash function!");
 					
 					// Increase current image value
@@ -92,9 +91,9 @@ public class HashGeneratorCivilization {
 					pressedKey = false;
 				}
 				
-				if (AoEHelper.quitApplication || screenCapture.currentImage == 35 || collision) {
+				if (AoEHelper.quitApplication || screenCapture.currentImage == 4 || collision) {
 					// Save hashmap into a file before quitting
-					screenCapture.saveHashMap(screenCapture.hashmapCivilizations, name);
+					screenCapture.saveHashMap(screenCapture.hashmapAges, name);
 					System.exit(0);
 				}
 			}
@@ -112,10 +111,10 @@ public class HashGeneratorCivilization {
 		for (int i = 0; i < images.length; i++) {
 			// Generate and add hash from captured image and add it to hashmap
 			int hash = screenCapture.generateHash(images[i]);
-			screenCapture.hashmapCivilizations.put(hash, screenCapture.currentImage);
+			screenCapture.hashmapAges.put(hash, screenCapture.currentImage);
 			
 			// We stop if currentImage+1 != hashmap.size() because there was a hash collision.
-			boolean collision = screenCapture.currentImage + 1 != screenCapture.hashmapCivilizations.size();
+			boolean collision = screenCapture.currentImage + 1 != screenCapture.hashmapAges.size();
 			if (collision) {
 				System.out.println("Collision, change hash function!");
 				break;
@@ -126,7 +125,7 @@ public class HashGeneratorCivilization {
 		}
 		
 		// Save hashmap into a file before quitting
-		screenCapture.saveHashMap(screenCapture.hashmapCivilizations, name);
+		screenCapture.saveHashMap(screenCapture.hashmapAges, name);
 		System.exit(0);
 	}
 	
@@ -202,13 +201,13 @@ public class HashGeneratorCivilization {
     }
 }
 
-class KeyListenerCivilization implements NativeKeyListener {
+class KeyListenerAge implements NativeKeyListener {
 
 	@Override
 	public void nativeKeyPressed(NativeKeyEvent e) {
 		// Set pressedKey to true if "L" was pressed to capture image
 		if (e.getKeyCode() == NativeKeyEvent.VC_L) {
-			HashGeneratorCivilization.pressedKey = true;
+			HashGeneratorAge.pressedKey = true;
 		}
 	}
 

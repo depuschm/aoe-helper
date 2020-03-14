@@ -47,7 +47,7 @@ import com.sun.jna.platform.win32.WinUser;
  */
 public class Overlay implements NativeKeyListener {
 	
-	private String textMain, textPop, textVillagers, textCivilization, textBO;
+	private String textMain, textPop, textVillagers, textCivilization, textAge, textBO;
 	private JComponent paintComponent;
 	private Robot robot;
 	public boolean clearGUI;
@@ -55,7 +55,8 @@ public class Overlay implements NativeKeyListener {
 	
 	private BufferedImage imageHouse;
 	private boolean houseNeeded;
-	private String[] civilizationNames;
+	private String[] civilizationNames, ageNames;
+	private String lastRecognizedCiv, lastRecognizedAge; // TODO: use this variables to remember recognized civ/age
 	private static JSONObject darkAge;
 	
 	public Overlay() {
@@ -63,9 +64,11 @@ public class Overlay implements NativeKeyListener {
 		textPop = "";
 		textVillagers = "";
 		textCivilization = "";
+		textAge = "";
 		textBO = "";
 		
 		InitCivilizationNames();
+		InitAgeNames();
 		
 		InitJNativeHook(this);
 		Window w = new Window(null);
@@ -117,7 +120,8 @@ public class Overlay implements NativeKeyListener {
 		            if (AoEHelperGUI.rdbtnShowDebugText.isSelected()) {
 		            	drawTextWithBackground(g2, textPop, x, y);
 			            drawTextWithBackground(g2, textVillagers, x-30, y);
-			            drawTextWithBackground(g2, textCivilization, x-100, y + 20);
+			            drawTextWithBackground(g2, textCivilization, x-150, y);
+			            drawTextWithBackground(g2, textAge, x-150, y + 20);
 		            }
 		            
 		            if (AoEHelperGUI.rdbtnShowBuildOrder.isSelected()) {
@@ -161,6 +165,12 @@ public class Overlay implements NativeKeyListener {
 			"Japanese", "Khmer", "Koreans", "Lithuanians", "Magyars", "Malay", "Malians", "Mayans",
 			"Mongols", "Persians", "Portuguese", "Saracens", "Slavs", "Spanish", "Tatars", "Teutons",
 			"Turks", "Vietnamese", "Vikings"
+		};
+	}
+	
+	private void InitAgeNames() {
+		ageNames = new String[] {
+			"Dark", "Feudal", "Castle", "Imperial"
 		};
 	}
 	
@@ -310,10 +320,26 @@ public class Overlay implements NativeKeyListener {
 			text = "";
 		} else {
 			text = civilizationNames[i];
+			lastRecognizedCiv = text;
 		}
 		
 		// Show text
 		textCivilization = text;
+		paintComponent.repaint();
+	}
+	
+	public void analyzeAge(String text) {
+		int i = Integer.parseInt(text);
+		
+		if (i == -1) {
+			text = "";
+		} else {
+			text = ageNames[i] + " Age";
+			lastRecognizedAge = text;
+		}
+		
+		// Show text
+		textAge = text;
 		paintComponent.repaint();
 	}
 	

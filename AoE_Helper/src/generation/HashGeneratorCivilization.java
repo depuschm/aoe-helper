@@ -97,6 +97,9 @@ public class HashGeneratorCivilization {
 					screenCapture.saveHashMap(screenCapture.hashmapCivilizations, name);
 					System.exit(0);
 				}
+				
+				// Update GUI
+				overlay.UpdateGUI();
 			}
 		};
 		timer.schedule(myTask, MILLISECONDS, MILLISECONDS);

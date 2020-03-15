@@ -96,6 +96,9 @@ public class HashGeneratorAge {
 					screenCapture.saveHashMap(screenCapture.hashmapAges, name);
 					System.exit(0);
 				}
+				
+				// Update GUI
+				overlay.UpdateGUI();
 			}
 		};
 		timer.schedule(myTask, MILLISECONDS, MILLISECONDS);

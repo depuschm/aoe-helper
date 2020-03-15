@@ -47,7 +47,8 @@ import com.sun.jna.platform.win32.WinUser;
  */
 public class Overlay implements NativeKeyListener {
 	
-	private String textMain, textPop, textVillagers, textCivilization, textAge, textBO;
+	private String textMain, textPop, textCivilization, textAge, textBO;
+	private String textVillagers, textFood, textWood, textGold, textStone;
 	private JComponent paintComponent;
 	private Robot robot;
 	public boolean clearGUI;
@@ -62,10 +63,15 @@ public class Overlay implements NativeKeyListener {
 	public Overlay() {
 		textMain = "";
 		textPop = "";
-		textVillagers = "";
 		textCivilization = "";
 		textAge = "";
 		textBO = "";
+		
+		textVillagers = "";
+		textFood = "";
+		textWood = "";
+		textGold = "";
+		textStone = "";
 		
 		InitCivilizationNames();
 		InitAgeNames();
@@ -121,11 +127,16 @@ public class Overlay implements NativeKeyListener {
 		            	drawTextWithBackground(g2, textPop, x, y);
 			            drawTextWithBackground(g2, textVillagers, x-30, y);
 			            drawTextWithBackground(g2, textCivilization, x-150, y);
-			            drawTextWithBackground(g2, textAge, x-150, y + 20);
+			            drawTextWithBackground(g2, textAge, x-150, y+20);
 		            }
 		            
 		            if (AoEHelperGUI.rdbtnShowBuildOrder.isSelected()) {
 		            	drawTextWithBackground(g2, textBO, x, y + 20);
+		            	
+		            	drawTextWithBackground(g2, textFood, x-220, y);
+			            drawTextWithBackground(g2, textWood, x-220, y+20);
+			            drawTextWithBackground(g2, textGold, x-220, y+40);
+			            drawTextWithBackground(g2, textStone, x-220, y+60);
 		            }
 		            
 		            // Draw image of house if almost housed
@@ -283,7 +294,6 @@ public class Overlay implements NativeKeyListener {
 		
 		// Show text
 		textVillagers = text;
-		paintComponent.repaint();
 	}
 	
 	public void analyzePopText(String text) {
@@ -310,7 +320,7 @@ public class Overlay implements NativeKeyListener {
 		}
 		
 		// Show text
-		SetTextToDisplay(text);
+		textPop = text;
 	}
 	
 	public void analyzeCivilization(String text) {
@@ -325,7 +335,6 @@ public class Overlay implements NativeKeyListener {
 		
 		// Show text
 		textCivilization = text;
-		paintComponent.repaint();
 	}
 	
 	public void analyzeAge(String text, boolean ageAdvancing) {
@@ -343,7 +352,58 @@ public class Overlay implements NativeKeyListener {
 		
 		// Show text
 		textAge = text;
-		paintComponent.repaint();
+	}
+	
+	public void analyzeFoodText(String text) {
+		int i = Integer.parseInt(text);
+		
+		if (i == -1) {
+			text = "";
+		} else {
+			text = "Food: " + text;
+		}
+		
+		// Show text
+		textFood = text;
+	}
+	
+	public void analyzeWoodText(String text) {
+		int i = Integer.parseInt(text);
+		
+		if (i == -1) {
+			text = "";
+		} else {
+			text = "Wood: " + text;
+		}
+		
+		// Show text
+		textWood = text;
+	}
+	
+	public void analyzeGoldText(String text) {
+		int i = Integer.parseInt(text);
+		
+		if (i == -1) {
+			text = "";
+		} else {
+			text = "Gold: " + text;
+		}
+		
+		// Show text
+		textGold = text;
+	}
+	
+	public void analyzeStoneText(String text) {
+		int i = Integer.parseInt(text);
+		
+		if (i == -1) {
+			text = "";
+		} else {
+			text = "Stone: " + text;
+		}
+		
+		// Show text
+		textStone = text;
 	}
 	
 	/**
@@ -351,13 +411,12 @@ public class Overlay implements NativeKeyListener {
 	 */
 	public void SetTextToDisplay(String text) {
 		textPop = text;
-		paintComponent.repaint();
 	}
 	
 	/**
-	 * Clears the entire GUI so that nothing is visible. Called when program is stopped.
+	 * Method to repaint the GUI/frame
 	 */
-	public void clearGUI() {
+	public void UpdateGUI() {
 		paintComponent.repaint();
 	}
 	

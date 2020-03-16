@@ -20,6 +20,8 @@ import java.util.Queue;
 import javax.swing.GrayFilter;
 
 import marvin.image.MarvinImage;
+import marvin.io.MarvinImageIO;
+
 import static marvin.MarvinPluginCollection.*;
 
 /**
@@ -55,9 +57,11 @@ public class ImageProcessing {
 		//image = scaleImage(image, 2.0f, AffineTransformOp.TYPE_BILINEAR);
 		//MarvinImagePlugin pluginImage = MarvinPluginLoader.loadImagePlugin("org.marvinproject.image.color.grayScale.jar");
 		
+		image = removeColorfulPixels(image, 95f / 255, Color.black);
 		brightnessAndContrast(image, 50, 100);
-		thresholding(image, 40);
-		image = scaleImage(image, 2.0f, 4.0f, AffineTransformOp.TYPE_BILINEAR);
+		//thresholding(image, 40);
+		image = scaleImage(image, 2.0f, 3.0f, AffineTransformOp.TYPE_BILINEAR);
+		//grayScale(image); // grayscale image (needed if pop is blinking yellow)
 		
 		//scale(image.clone(), image, (int) (image.getWidth() * 2.0f), (int) (image.getHeight() * 4.0f));
 		
@@ -74,7 +78,8 @@ public class ImageProcessing {
 		image.setAlphaByColor(0, 0xFFFFFFFF);
 		alphaBoundary(image, 5);*/
 		//image = Binarization.GetBmp(image);
-
+		
+		//MarvinImageIO.saveImage(image, "CapturedImage.png");
 		return image;
 	}
 	

@@ -57,7 +57,7 @@ public class PartialScreenCapture {
 		screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		
 		// Initialize rectangles (part of screen to capture)
-		popRectangle = new Rectangle(453, 22, 61, 16);
+		popRectangle = new Rectangle(455, 24, 58, 11);
 		civilizationRectangle = new Rectangle(1624, 20, 2, 26);
 		ageRectangle = new Rectangle(600, 20, 2, 22);
 		ageAdvancingRectangle = new Rectangle(626, 38, 1, 1);
@@ -131,7 +131,7 @@ public class PartialScreenCapture {
 					currentColor.getBlue() >= 255-threshold) {
 					// Add it to hash
 					//hash += 300*(255-currentColor.getRed()) + (y*w + x);
-					hash += 1000*(255-currentColor.getRed()) + (y*w + x);
+					hash += 1000*(255-currentColor.getRed()) + (y*w + x); // TODO: y*w+x is just a constant at the end (sum of all pixels, so needed??)
 				}
 			}
 		}

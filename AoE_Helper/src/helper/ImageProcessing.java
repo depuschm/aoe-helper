@@ -38,7 +38,11 @@ public class ImageProcessing {
 			return imagePostProcessingPop(image);
 		}
 		else if (captureRect == PartialScreenCapture.villagersRectangle) {
+			// Not used right now
 			return imagePostProcessingVillagers(image);
+		}
+		else if (captureRect == PartialScreenCapture.pointsRectangle) {
+			return imagePostProcessingPoints(image);
 		}
 		return null;
 	}
@@ -122,6 +126,57 @@ public class ImageProcessing {
 		//brightnessAndContrast(image, 200, 0);
 
 		return image;
+	}
+	
+	private static MarvinImage imagePostProcessingPoints(MarvinImage image) {
+		//image = removeColorfulPixels(image, 95f / 255, Color.black);
+		brightnessAndContrast(image, 50, 100);
+		//grayScale(image); // grayscale image (needed if pop is blinking yellow)
+		//thresholding(image, 40);
+		//image = scaleImage(image, 2.0f, 3.0f, AffineTransformOp.TYPE_BILINEAR);
+		//MarvinImageIO.saveImage(image, "CapturedImage.png");
+		//image = removeSmallRegions(image, 20, 150, Color.black);
+		
+		int offset = getOffsetForDoublePoint(image, 40, 1);
+		crop(image.clone(), image, offset, 0, image.getWidth() - offset, image.getHeight());
+		
+		image = scaleImage(image, 2.0f, 3.0f, AffineTransformOp.TYPE_BILINEAR);
+		
+		//MarvinImageIO.saveImage(image, "CapturedImage.png");
+		return image;
+	}
+	
+	private static int getOffsetForDoublePoint(MarvinImage image, int startOffset, int decreaseByPixels) {
+		//grayScale(image);
+		thresholding(image, 80);
+		
+		// Calculate when ":" comes in text (check 4 pixels: white/black/white/black until we reached ":" to get offset)
+		// After that, crop the image after ":".
+		// The image doesn't have to be in grayscale nessesarily, but the red value of the pixel must be at least bigger than
+		// the threshold, so colors as green might be difficult to analyze but with thresholding before it works.
+		// The threshold should be so small as possible but so big that it still works with the transparent black background
+		int offset = startOffset;
+		int color1, color2, color3, color4;
+		int red1, red2, red3, red4; // only need to check one channel in grayscale image since r=g=b
+		int threshold = 30;
+		final int DEFAULT_OFFSET = 4; // used to avoid that ":" is on the picture, shifts the offset to the right a bit
+		
+		for (int x = offset; x > 0; x -= decreaseByPixels) {
+			color1 = image.getIntColor(x, 3);
+			color2 = image.getIntColor(x, 7);
+			color3 = image.getIntColor(x, 11);
+			color4 = image.getIntColor(x, 15);
+			red1 = (color1 >> 16) & 0xff;
+			red2 = (color2 >> 16) & 0xff;
+			red3 = (color3 >> 16) & 0xff;
+			red4 = (color4 >> 16) & 0xff;
+			
+			if (red1 < threshold && red2 >= threshold && red3 < threshold && red4 >= threshold) {
+				break;
+			}
+			offset--;
+		}
+		return offset + DEFAULT_OFFSET;
 	}
 
 	/**

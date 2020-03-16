@@ -44,6 +44,7 @@ public class AoEHelper {
 					BufferedImage imageCivilization = screenCapture.captureImage(PartialScreenCapture.civilizationRectangle);
 					BufferedImage imageAge = screenCapture.captureImage(PartialScreenCapture.ageRectangle);
 					BufferedImage imageAgeAdvancing = screenCapture.captureImage(PartialScreenCapture.ageAdvancingRectangle);
+					BufferedImage imagePoints = screenCapture.captureAndProcessImage(PartialScreenCapture.pointsRectangle);
 					
 					BufferedImage imageVillagers = screenCapture.captureImage(PartialScreenCapture.villagersRectangle);
 					BufferedImage imageFood = screenCapture.captureImage(PartialScreenCapture.foodRectangle);
@@ -56,6 +57,7 @@ public class AoEHelper {
 					String civilization = screenCapture.hashImageAndLookUpValue(imageCivilization, screenCapture.hashmapCivilizations, 0);
 					String age = screenCapture.hashImageAndLookUpValue(imageAge, screenCapture.hashmapAges, 0);
 					boolean ageAdvancing = screenCapture.checkIfRed(imageAgeAdvancing, 150);
+					String textPoints = ocr.recognize(imagePoints, ocr.CHARACTERS_NUMBERS_AND_SLASH);
 					
 					String textVillagers = screenCapture.hashImageAndLookUpValue(imageVillagers, screenCapture.hashmapVillagers, 1);
 					String textFood = screenCapture.hashImageAndLookUpValue(imageFood, screenCapture.hashmapVillagers, 1);
@@ -67,6 +69,7 @@ public class AoEHelper {
 					overlay.analyzePopText(textPop);
 					overlay.analyzeCivilization(civilization);
 					overlay.analyzeAge(age, ageAdvancing);
+					overlay.analyzePoints(textPoints);
 					
 					overlay.analyzeVillagersText(textVillagers);
 					overlay.analyzeFoodText(textFood);

@@ -47,12 +47,13 @@ import com.sun.jna.platform.win32.WinUser;
  */
 public class Overlay implements NativeKeyListener {
 	
-	private String textMain, textPop, textCivilization, textAge, textBO;
+	private String textMain, textPop, textCivilization, textAge, textBO, textPoints;
 	private String textVillagers, textFood, textWood, textGold, textStone;
 	private JComponent paintComponent;
 	private Robot robot;
 	public boolean clearGUI;
 	public AoEHelperGUI gui;
+	public boolean ingame;
 	
 	private BufferedImage imageHouse;
 	private boolean houseNeeded;
@@ -66,6 +67,7 @@ public class Overlay implements NativeKeyListener {
 		textCivilization = "";
 		textAge = "";
 		textBO = "";
+		textPoints = "";
 		
 		textVillagers = "";
 		textFood = "";
@@ -128,6 +130,7 @@ public class Overlay implements NativeKeyListener {
 			            drawTextWithBackground(g2, textVillagers, x-30, y);
 			            drawTextWithBackground(g2, textCivilization, x-150, y);
 			            drawTextWithBackground(g2, textAge, x-150, y+20);
+			            drawTextWithBackground(g2, textPoints, x-360, y);
 			            
 			            drawTextWithBackground(g2, textFood, x-220, y);
 			            drawTextWithBackground(g2, textWood, x-220, y+20);
@@ -288,8 +291,10 @@ public class Overlay implements NativeKeyListener {
 		if (villagers == -1) {
 			text = "";
 			textMain = "Not ingame";
+			ingame = true;
 		} else {
 			textMain = "";
+			ingame = false;
 		}
 		
 		// Show text
@@ -406,11 +411,22 @@ public class Overlay implements NativeKeyListener {
 		textStone = text;
 	}
 	
+	public void analyzePoints(String text) {
+		if (text.isEmpty()) {
+			text = "";
+		} else {
+			text = "Points: " + text;
+		}
+		
+		// Show text
+		textPoints = text;
+	}
+	
 	/**
-	 * Default text panel is textPop. This method is also used to display debug information during hash generation.
+	 * Default text panel is textMain. This method is also used to display debug information during hash generation.
 	 */
 	public void SetTextToDisplay(String text) {
-		textPop = text;
+		textMain = text;
 	}
 	
 	/**

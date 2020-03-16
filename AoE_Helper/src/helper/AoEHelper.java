@@ -55,7 +55,7 @@ public class AoEHelper {
 					String textPop = ocr.recognize(imagePop, ocr.CHARACTERS_NUMBERS_AND_SLASH);
 					String civilization = screenCapture.hashImageAndLookUpValue(imageCivilization, screenCapture.hashmapCivilizations, 0);
 					String age = screenCapture.hashImageAndLookUpValue(imageAge, screenCapture.hashmapAges, 0);
-					boolean ageAdvancing = screenCapture.checkIfRed(imageAgeAdvancing, 100);
+					boolean ageAdvancing = screenCapture.checkIfRed(imageAgeAdvancing, 150);
 					
 					String textVillagers = screenCapture.hashImageAndLookUpValue(imageVillagers, screenCapture.hashmapVillagers, 1);
 					String textFood = screenCapture.hashImageAndLookUpValue(imageFood, screenCapture.hashmapVillagers, 1);

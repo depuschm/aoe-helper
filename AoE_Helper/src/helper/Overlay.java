@@ -128,15 +128,15 @@ public class Overlay implements NativeKeyListener {
 			            drawTextWithBackground(g2, textVillagers, x-30, y);
 			            drawTextWithBackground(g2, textCivilization, x-150, y);
 			            drawTextWithBackground(g2, textAge, x-150, y+20);
+			            
+			            drawTextWithBackground(g2, textFood, x-220, y);
+			            drawTextWithBackground(g2, textWood, x-220, y+20);
+			            drawTextWithBackground(g2, textGold, x-220, y+40);
+			            drawTextWithBackground(g2, textStone, x-220, y+60);
 		            }
 		            
 		            if (AoEHelperGUI.rdbtnShowBuildOrder.isSelected()) {
 		            	drawTextWithBackground(g2, textBO, x, y + 20);
-		            	
-		            	drawTextWithBackground(g2, textFood, x-220, y);
-			            drawTextWithBackground(g2, textWood, x-220, y+20);
-			            drawTextWithBackground(g2, textGold, x-220, y+40);
-			            drawTextWithBackground(g2, textStone, x-220, y+60);
 		            }
 		            
 		            // Draw image of house if almost housed

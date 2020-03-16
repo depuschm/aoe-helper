@@ -59,7 +59,7 @@ public class PartialScreenCapture {
 		// Initialize rectangles (part of screen to capture)
 		popRectangle = new Rectangle(453, 22, 61, 16);
 		civilizationRectangle = new Rectangle(1624, 20, 2, 26);
-		ageRectangle = new Rectangle(600, 20, 2, 26);
+		ageRectangle = new Rectangle(600, 20, 2, 22);
 		ageAdvancingRectangle = new Rectangle(626, 38, 1, 1);
 		
 		villagersRectangle = new Rectangle(423, 39, 22, 8);

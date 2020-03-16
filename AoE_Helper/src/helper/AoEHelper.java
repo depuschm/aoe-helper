@@ -39,43 +39,47 @@ public class AoEHelper {
 				// This part is executed every x milliseconds
 				if (AoEHelperGUI.active) {
 					
-					// Create screen capture
-					BufferedImage imagePop = screenCapture.captureAndProcessImage(PartialScreenCapture.popRectangle);
-					BufferedImage imageCivilization = screenCapture.captureImage(PartialScreenCapture.civilizationRectangle);
-					BufferedImage imageAge = screenCapture.captureImage(PartialScreenCapture.ageRectangle);
-					BufferedImage imageAgeAdvancing = screenCapture.captureImage(PartialScreenCapture.ageAdvancingRectangle);
-					BufferedImage imagePoints = screenCapture.captureAndProcessImage(PartialScreenCapture.pointsRectangle);
-					
+					// Create screen capture, recognize and show text in overlay / check if ingame
 					BufferedImage imageVillagers = screenCapture.captureImage(PartialScreenCapture.villagersRectangle);
-					BufferedImage imageFood = screenCapture.captureImage(PartialScreenCapture.foodRectangle);
-					BufferedImage imageWood = screenCapture.captureImage(PartialScreenCapture.woodRectangle);
-					BufferedImage imageGold = screenCapture.captureImage(PartialScreenCapture.goldRectangle);
-					BufferedImage imageStone = screenCapture.captureImage(PartialScreenCapture.stoneRectangle);
-					
-					// Recognize captured image
-					String textPop = ocr.recognize(imagePop, ocr.CHARACTERS_NUMBERS_AND_SLASH);
-					String civilization = screenCapture.hashImageAndLookUpValue(imageCivilization, screenCapture.hashmapCivilizations, 0);
-					String age = screenCapture.hashImageAndLookUpValue(imageAge, screenCapture.hashmapAges, 0);
-					boolean ageAdvancing = screenCapture.checkIfRed(imageAgeAdvancing, 150);
-					String textPoints = ocr.recognize(imagePoints, ocr.CHARACTERS_NUMBERS_AND_SLASH);
-					
 					String textVillagers = screenCapture.hashImageAndLookUpValue(imageVillagers, screenCapture.hashmapVillagers, 1);
-					String textFood = screenCapture.hashImageAndLookUpValue(imageFood, screenCapture.hashmapVillagers, 1);
-					String textWood = screenCapture.hashImageAndLookUpValue(imageWood, screenCapture.hashmapVillagers, 1);
-					String textGold = screenCapture.hashImageAndLookUpValue(imageGold, screenCapture.hashmapVillagers, 1);
-					String textStone = screenCapture.hashImageAndLookUpValue(imageStone, screenCapture.hashmapVillagers, 1);
-					
-					// Change text in overlay
-					overlay.analyzePopText(textPop);
-					overlay.analyzeCivilization(civilization);
-					overlay.analyzeAge(age, ageAdvancing);
-					overlay.analyzePoints(textPoints);
-					
 					overlay.analyzeVillagersText(textVillagers);
-					overlay.analyzeFoodText(textFood);
-					overlay.analyzeWoodText(textWood);
-					overlay.analyzeGoldText(textGold);
-					overlay.analyzeStoneText(textStone);
+					
+					if (overlay.ingame) {
+						// Create screen capture
+						BufferedImage imagePop = screenCapture.captureAndProcessImage(PartialScreenCapture.popRectangle);
+						BufferedImage imageCivilization = screenCapture.captureImage(PartialScreenCapture.civilizationRectangle);
+						BufferedImage imageAge = screenCapture.captureImage(PartialScreenCapture.ageRectangle);
+						BufferedImage imageAgeAdvancing = screenCapture.captureImage(PartialScreenCapture.ageAdvancingRectangle);
+						BufferedImage imagePoints = screenCapture.captureAndProcessImage(PartialScreenCapture.pointsRectangle);
+						
+						BufferedImage imageFood = screenCapture.captureImage(PartialScreenCapture.foodRectangle);
+						BufferedImage imageWood = screenCapture.captureImage(PartialScreenCapture.woodRectangle);
+						BufferedImage imageGold = screenCapture.captureImage(PartialScreenCapture.goldRectangle);
+						BufferedImage imageStone = screenCapture.captureImage(PartialScreenCapture.stoneRectangle);
+						
+						// Recognize captured image
+						String textPop = ocr.recognize(imagePop, ocr.CHARACTERS_NUMBERS_AND_SLASH);
+						String civilization = screenCapture.hashImageAndLookUpValue(imageCivilization, screenCapture.hashmapCivilizations, 0);
+						String age = screenCapture.hashImageAndLookUpValue(imageAge, screenCapture.hashmapAges, 0);
+						boolean ageAdvancing = screenCapture.checkIfRed(imageAgeAdvancing, 150);
+						String textPoints = ocr.recognize(imagePoints, ocr.CHARACTERS_NUMBERS_AND_SLASH);
+						
+						String textFood = screenCapture.hashImageAndLookUpValue(imageFood, screenCapture.hashmapVillagers, 1);
+						String textWood = screenCapture.hashImageAndLookUpValue(imageWood, screenCapture.hashmapVillagers, 1);
+						String textGold = screenCapture.hashImageAndLookUpValue(imageGold, screenCapture.hashmapVillagers, 1);
+						String textStone = screenCapture.hashImageAndLookUpValue(imageStone, screenCapture.hashmapVillagers, 1);
+						
+						// Change text in overlay
+						overlay.analyzePopText(textPop);
+						overlay.analyzeCivilization(civilization);
+						overlay.analyzeAge(age, ageAdvancing);
+						overlay.analyzePoints(textPoints);
+						
+						overlay.analyzeFoodText(textFood);
+						overlay.analyzeWoodText(textWood);
+						overlay.analyzeGoldText(textGold);
+						overlay.analyzeStoneText(textStone);
+					}
 				}
 				
 				// Update GUI

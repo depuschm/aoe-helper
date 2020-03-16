@@ -63,17 +63,7 @@ public class Overlay implements NativeKeyListener {
 	
 	public Overlay() {
 		textMain = "";
-		textPop = "";
-		textCivilization = "";
-		textAge = "";
-		textBO = "";
-		textPoints = "";
-		
-		textVillagers = "";
-		textFood = "";
-		textWood = "";
-		textGold = "";
-		textStone = "";
+		ResetText();
 		
 		InitCivilizationNames();
 		InitAgeNames();
@@ -170,6 +160,20 @@ public class Overlay implements NativeKeyListener {
 	    w.setAlwaysOnTop(true);
 	    
 	    setTransparent(w);
+	}
+	
+	private void ResetText() {
+		textPop = "";
+		textCivilization = "";
+		textAge = "";
+		textBO = "";
+		textPoints = "";
+		
+		textVillagers = "";
+		textFood = "";
+		textWood = "";
+		textGold = "";
+		textStone = "";
 	}
 	
 	private void InitCivilizationNames() {
@@ -291,10 +295,11 @@ public class Overlay implements NativeKeyListener {
 		if (villagers == -1) {
 			text = "";
 			textMain = "Not ingame";
-			ingame = true;
+			ingame = false;
+			ResetText();
 		} else {
 			textMain = "";
-			ingame = false;
+			ingame = true;
 		}
 		
 		// Show text

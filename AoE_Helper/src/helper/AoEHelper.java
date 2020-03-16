@@ -14,8 +14,10 @@ public class AoEHelper {
 	private static PartialScreenCapture screenCapture;
 	private static OCR ocr;
 	private static AoEHelperGUI gui;
+	private static int counter;
 	
 	private static final int MILLISECONDS = 1000;
+	private static final int COUNT_UPDATE = 1;
 	
 	public static void main(String[] args) {
 		// Create overlay, screen capture and OCR (optical character recognition) class to recognize captured images
@@ -79,6 +81,17 @@ public class AoEHelper {
 						overlay.analyzeWoodText(textWood);
 						overlay.analyzeGoldText(textGold);
 						overlay.analyzeStoneText(textStone);
+						
+						
+						// The following things are only updated once the counter reaches COUNT_UPDATE
+						counter++;
+						if (counter == COUNT_UPDATE) {
+							// Show map information
+							BufferedImage imageMap = screenCapture.captureImage(PartialScreenCapture.mapRectangle);
+							overlay.analyzeMap(imageMap);
+							
+							counter = 0;
+						}
 					}
 				}
 				

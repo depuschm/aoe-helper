@@ -26,7 +26,7 @@ import marvin.image.MarvinImage;
  */
 public class PartialScreenCapture {
 
-	public static Rectangle popRectangle, civilizationRectangle, ageRectangle, ageAdvancingRectangle, pointsRectangle;
+	public static Rectangle popRectangle, civilizationRectangle, ageRectangle, ageAdvancingRectangle, pointsRectangle, mapRectangle;
 	public static Rectangle villagersRectangle, foodRectangle, woodRectangle, goldRectangle, stoneRectangle;
 	private ImageProcessing imageProcessing;
 	private Dimension screenSize;
@@ -62,6 +62,7 @@ public class PartialScreenCapture {
 		ageRectangle = new Rectangle(600, 20, 2, 22);
 		ageAdvancingRectangle = new Rectangle(626, 38, 1, 1);
 		pointsRectangle = new Rectangle(1750, 863, 110, 18);
+		mapRectangle = new Rectangle(1557, 892, 345, 186);
 		
 		villagersRectangle = new Rectangle(423, 39, 22, 8);
 		foodRectangle = new Rectangle(124, 39, 22, 8);

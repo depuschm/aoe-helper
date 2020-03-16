@@ -47,7 +47,7 @@ import com.sun.jna.platform.win32.WinUser;
  */
 public class Overlay implements NativeKeyListener {
 	
-	private String textMain, textPop, textCivilization, textAge, textBO, textPoints;
+	private String textMain, textPop, textCivilization, textAge, textBO, textPoints, textExplored;
 	private String textVillagers, textFood, textWood, textGold, textStone;
 	private JComponent paintComponent;
 	private Robot robot;
@@ -55,7 +55,7 @@ public class Overlay implements NativeKeyListener {
 	public AoEHelperGUI gui;
 	public boolean ingame;
 	
-	private BufferedImage imageHouse;
+	private BufferedImage imageHouse, imageMapMask, imageMap;
 	private boolean houseNeeded;
 	private String[] civilizationNames, ageNames;
 	private String lastRecognizedCiv, lastRecognizedAge; // TODO: use this variables to remember recognized civ/age
@@ -79,9 +79,12 @@ public class Overlay implements NativeKeyListener {
 		}
 		
 		// Load images
-		File resource = new File("data/images/house.png");
+		File file_house = new File("data/images/house.png");
+		File file_map_mask = new File("data/images/map_mask.png");
+		
         try {
-            imageHouse = ImageIO.read(resource);
+            imageHouse = ImageIO.read(file_house);
+            imageMapMask = ImageIO.read(file_map_mask);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -120,12 +123,14 @@ public class Overlay implements NativeKeyListener {
 			            drawTextWithBackground(g2, textVillagers, x-30, y);
 			            drawTextWithBackground(g2, textCivilization, x-150, y);
 			            drawTextWithBackground(g2, textAge, x-150, y+20);
-			            drawTextWithBackground(g2, textPoints, x-360, y);
+			            drawTextWithBackground(g2, textExplored, x-150, y+40);
 			            
 			            drawTextWithBackground(g2, textFood, x-220, y);
 			            drawTextWithBackground(g2, textWood, x-220, y+20);
 			            drawTextWithBackground(g2, textGold, x-220, y+40);
 			            drawTextWithBackground(g2, textStone, x-220, y+60);
+			            
+			            drawTextWithBackground(g2, textPoints, x-360, y);
 		            }
 		            
 		            if (AoEHelperGUI.rdbtnShowBuildOrder.isSelected()) {
@@ -168,6 +173,7 @@ public class Overlay implements NativeKeyListener {
 		textAge = "";
 		textBO = "";
 		textPoints = "";
+		textExplored = "";
 		
 		textVillagers = "";
 		textFood = "";
@@ -425,6 +431,47 @@ public class Overlay implements NativeKeyListener {
 		
 		// Show text
 		textPoints = text;
+	}
+	
+	public void analyzeMap(BufferedImage image) {
+		// Analyze map, find percentage how much was explored
+		// Store map into variable (used for new map hotkeys like going to the next gold etc.)
+		imageMap = image;
+		
+		Color currentColor, currentMaskColor;
+		int w = image.getWidth();
+		int h = image.getHeight();
+		
+		// To see the amount of pixels of the map, open map_mask in Photoshop Window -> Histogram.
+		int max_pixels = 32761;
+		int pixels_unexplored = 0;
+		
+		for (int y = 0; y < h; y++) {
+			for (int x = 0; x < w; x++) {
+				// Only check pixels where mask is white
+				currentMaskColor = new Color(imageMapMask.getRGB(x, y));
+				
+				if (currentMaskColor.equals(Color.white)) {
+					
+					// Check if pixel is black (= unexplored)
+					currentColor = new Color(image.getRGB(x, y));
+					
+					if (currentColor.equals(Color.black)) {
+						pixels_unexplored++;
+					}
+				}
+			}
+		}
+		
+		// Calculate how much percent the player explored the map
+		int pixels_explored = max_pixels - pixels_unexplored;
+		
+		//int percentage = (int) (((float) pixels_explored / max_pixels) * 100);
+		float percentage = ((float) pixels_explored / max_pixels) * 100;
+		float roundedPercentage = Math.round(percentage * 100f) / 100f;
+		
+		// Show text
+		textExplored = "Explored: " + roundedPercentage + "%";
 	}
 	
 	/**

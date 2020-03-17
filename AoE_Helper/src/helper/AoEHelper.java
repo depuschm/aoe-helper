@@ -87,8 +87,8 @@ public class AoEHelper {
 						counter++;
 						if (counter == COUNT_UPDATE) {
 							// Show map information
-							BufferedImage imageMap = screenCapture.captureImage(PartialScreenCapture.mapRectangle);
-							overlay.analyzeMap(imageMap);
+							/*BufferedImage imageMap = screenCapture.captureImage(PartialScreenCapture.mapRectangle);
+							overlay.analyzeMap(imageMap);*/
 							
 							counter = 0;
 						}

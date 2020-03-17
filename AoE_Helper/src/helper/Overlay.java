@@ -55,6 +55,9 @@ public class Overlay implements NativeKeyListener {
 	public AoEHelperGUI gui;
 	public boolean ingame;
 	
+	private int points_previous;
+	private boolean advancingFeudal, advancingCastle, advancingImperial;
+	
 	private BufferedImage imageHouse, imageMapMask, imageMap;
 	private boolean houseNeeded;
 	private String[] civilizationNames, ageNames;
@@ -64,6 +67,10 @@ public class Overlay implements NativeKeyListener {
 	public Overlay() {
 		textMain = "";
 		ResetText();
+		
+		points_previous = -1;
+		advancingFeudal = false;
+		advancingCastle = false;
 		
 		InitCivilizationNames();
 		InitAgeNames();
@@ -423,10 +430,38 @@ public class Overlay implements NativeKeyListener {
 	}
 	
 	public void analyzePoints(String text) {
-		if (text.isEmpty()) {
+		String[] textSplit = text.split("/");
+		
+		// Verify that split was successful
+		try {
+			// Get points and team points
+			int points = Integer.parseInt(textSplit[0].trim());
+			int points_team = Integer.parseInt(textSplit[1].trim());
+			
+			// Add age up warning
+			String advancing = "";
+			if (points_previous != -1) {
+				int point_difference = points - points_previous;
+				
+				//if (age[current_civ] != imperial && point_difference <= -170)
+				if (point_difference <= -170) {
+					advancing = " (Advancing Imperial)";
+				}
+				else if (point_difference <= -90) {
+					advancing = " (Advancing Castle)";
+				}
+				else if (point_difference <= -40) {
+					advancing = " (Advancing Feudal)";
+				}
+			}
+			points_previous = points;
+			
+			text = "Points: " + text + advancing;
+		}
+		catch (Exception e) {
+			// Exception might happen either if / was not found or parsing was not successful
+			//System.err.println(e.getMessage());
 			text = "";
-		} else {
-			text = "Points: " + text;
 		}
 		
 		// Show text

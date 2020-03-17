@@ -56,7 +56,6 @@ public class Overlay implements NativeKeyListener {
 	public boolean ingame;
 	
 	private int points_previous;
-	private boolean advancingFeudal, advancingCastle, advancingImperial;
 	
 	private BufferedImage imageHouse, imageMapMask, imageMap;
 	private boolean houseNeeded;
@@ -69,8 +68,6 @@ public class Overlay implements NativeKeyListener {
 		ResetText();
 		
 		points_previous = -1;
-		advancingFeudal = false;
-		advancingCastle = false;
 		
 		InitCivilizationNames();
 		InitAgeNames();

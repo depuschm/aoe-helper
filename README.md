@@ -1,4 +1,4 @@
-# aoe_helper
+# aoe-helper
 This program is intended to help the player while playing the game "Age of Empires II: DE".
 
 ## About

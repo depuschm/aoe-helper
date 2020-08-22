@@ -1,8 +1,6 @@
 ## Custom
 # Distribution folder
 dist/
-# Screenshots
-screenshots/
 
 # Maven project
 target/

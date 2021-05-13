@@ -16,7 +16,7 @@ These technologies are used to develop this program:
 - [ini4j](https://github.com/facebookarchive/ini4j) (used to save/load settings)
 
 ### Copyright notice
-Age of Empires II © Microsoft Corporation. "AoEHelper" was created under Microsoft's "[Game Content Usage Rules](https://www.xbox.com/en-us/developers/rules)" using assets from Age of Empires II, and it is not endorsed by or affiliated with Microsoft.
+Age of Empires II © Microsoft Corporation. **AoEHelper** was created under Microsoft's "[Game Content Usage Rules](https://www.xbox.com/en-us/developers/rules)" using assets from Age of Empires II, and it is not endorsed by or affiliated with Microsoft.
 
 ## 🎮 Demo
 
@@ -46,12 +46,12 @@ GUI
 
 ### Done
 - Show house image if player is two or less units away from max population
-
-### WIP
 - Show messages to master the "Fast Castle" build order
 
-### TODO
+### WIP
 - Show more BOs and common strategies for civilizations
-- Show amount of trade cards / fishing boats
 - Use point reading to guess when someone presses "age up" technologies
+
+### TODO
+- Show amount of trade cards / fishing boats
 - Add new hotkeys: Go to nearest stone/gold, produce continuously specific unit...

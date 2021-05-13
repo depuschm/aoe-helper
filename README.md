@@ -16,7 +16,7 @@ These technologies are used to develop this program:
 - [ini4j](https://github.com/facebookarchive/ini4j) (used to save/load settings)
 
 ### Copyright notice
-Age of Empires II © Microsoft Corporation. **AoEHelper** was created under Microsoft's "[Game Content Usage Rules](https://www.xbox.com/en-us/developers/rules)" using assets from Age of Empires II, and it is not endorsed by or affiliated with Microsoft.
+Age of Empires II: Definitive Edition © Microsoft Corporation. **AoEHelper** was created under Microsoft's "[Game Content Usage Rules](https://www.xbox.com/en-us/developers/rules)" using assets from Age of Empires II: Definitive Edition, and it is not endorsed by or affiliated with Microsoft.
 
 ## 🎮 Demo
 
@@ -28,11 +28,14 @@ An execubale jar file is in the folder "AoE_Helper/dist". Ingame, the player is 
 ## 🌈 Screenshots
 
 Ingame
+- An image of a house is shown because the population limit is almost reached.
+- Different messages of the fast castle build order are shown dependent on the villager amount.
 <p align="left">
   <img src="https://raw.githubusercontent.com/rayo3/aoe_helper/master/AoE_Helper/screenshots/ingame.jpg">
 </p>
 
 Not ingame
+- The message "Not ingame" is shown if outside of a game.
 <p align="left">
   <img src="https://raw.githubusercontent.com/rayo3/aoe_helper/master/AoE_Helper/screenshots/not_ingame.jpg">
 </p>

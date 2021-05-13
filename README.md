@@ -15,6 +15,9 @@ These technologies are used to develop this program:
 - [marvinproject](https://github.com/gabrielarchanjo/marvinproject) (used for image processing)
 - [ini4j](https://github.com/facebookarchive/ini4j) (used to save/load settings)
 
+### Copyright notice
+Age of Empires II © Microsoft Corporation. "AoEHelper" was created under Microsoft's "[Game Content Usage Rules](https://www.xbox.com/en-us/developers/rules)" using assets from Age of Empires II, and it is not endorsed by or affiliated with Microsoft.
+
 ## 🎮 Demo
 
 An execubale jar file is in the folder "AoE_Helper/dist". Ingame, the player is notified when he needs to make houses, also messages appear to guide the player so that he masters the "Fast Castle" build order. The demo was tested ingame with a resolution of 1920x1080 pixels and an In-game HUD Scale of 100%. If you are not ingame, the program shows the text "Not ingame". To end the program simply click the "." key or use the GUI.

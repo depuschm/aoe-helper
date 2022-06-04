@@ -26,6 +26,9 @@ import helper.PartialScreenCapture;
  * Use this class to capture and save villager count images automatically.
  * After that, hashes are generated for images which are used for image recognition.
  * 
+ * Uncommend generateHashmapByCapturingImages() and Press "L" to capture an image.
+ * After all images were captured generate hashes by uncommening generateHashmapByStoredImages().
+ * 
  * Presets: Choose pop 500. Make sure your hotkey for town center is "D" and Villager "A". Type "ninjalui" and "aegis" as cheat.
  *          Use huns to not make houses and delete all but your town center and then call this script.
  */

@@ -60,12 +60,20 @@ public class Overlay implements NativeKeyListener {
 	private BufferedImage imageHouse, imageMapMask, imageMap;
 	private boolean houseNeeded;
 	private String[] civilizationNames, ageNames;
-	private String lastRecognizedCiv, lastRecognizedAge; // TODO: use this variables to remember recognized civ/age
-	private static JSONObject darkAge;
+	private String lastRecognizedCiv; // TODO: use this variable to remember recognized civ
+	private Age lastRecognizedAge; // TODO: use this variable to remember recognized age
+	private static JSONObject population_darkAge, population_feudalAge, population_castleAge, population_imperialAge;
+	private static JSONObject timer_darkAge, timer_feudalAge, timer_castleAge, timer_imperialAge;
+	private static JSONObject timer_darkAgeAdvancing, timer_feudalAgeAdvancing, timer_castleAgeAdvancing;
+	
+	public enum Age
+	{
+		Dark, Feudal, Castle, Imperial
+	}
 	
 	public Overlay() {
 		textMain = "";
-		ResetText();
+		ResetVariables();
 		
 		points_previous = -1;
 		
@@ -93,7 +101,7 @@ public class Overlay implements NativeKeyListener {
             e.printStackTrace();
         }
         
-        // Load build order text
+        // Load build order text (Not used here, now in AoEHelperGUI.loadBuildOrderText)
         //loadBuildOrderText();
 	    
 	    /**
@@ -171,7 +179,7 @@ public class Overlay implements NativeKeyListener {
 	    setTransparent(w);
 	}
 	
-	private void ResetText() {
+	private void ResetVariables() {
 		textPop = "";
 		textCivilization = "";
 		textAge = "";
@@ -184,9 +192,12 @@ public class Overlay implements NativeKeyListener {
 		textWood = "";
 		textGold = "";
 		textStone = "";
+		
+		houseNeeded = false;
 	}
 	
 	private void InitCivilizationNames() {
+		// TODO: Update civs
 		civilizationNames = new String[] {
 			"Aztecs", "Berbers", "Britons", "Bulgarians", "Burmese", "Byzantines", "Celts", "Chinese",
 			"Cumans", "Ethiopians", "Franks", "Goths", "Huns", "Incas", "Indians", "Italians",
@@ -227,7 +238,17 @@ public class Overlay implements NativeKeyListener {
 		// Get triggers object within list
 		JSONObject triggers = (JSONObject) json.get("triggers");
 		JSONObject population = (JSONObject) triggers.get("population");
-		darkAge = (JSONObject) population.get("dark_age");
+		population_darkAge = (JSONObject) population.get("dark_age");
+		population_feudalAge = (JSONObject) population.get("feudal_age");
+		population_castleAge = (JSONObject) population.get("castle_age");
+		population_imperialAge = (JSONObject) population.get("imperial_age");
+		
+		JSONObject timer = (JSONObject) triggers.get("timer");
+		timer_darkAge = (JSONObject) timer.get("dark_age");
+		timer_darkAgeAdvancing = (JSONObject) timer.get("dark_age_advancing");
+		timer_feudalAge = (JSONObject) timer.get("feudal_age");
+		timer_castleAge = (JSONObject) timer.get("castle_age");
+		timer_imperialAge = (JSONObject) timer.get("imperial_age");
 		
 		// Print first trigger
 		//String trigger = getTextFromJSONObject(darkAge, "3");
@@ -299,17 +320,32 @@ public class Overlay implements NativeKeyListener {
 	public void analyzeVillagersText(String text) {
 		// Add build order text
 		int villagers = Integer.parseInt(text);
-		textBO = getTextFromJSONObject(darkAge, "" + villagers);
 		
 		// Set main text
 		if (villagers == -1) {
 			text = "";
 			textMain = "Not ingame";
 			ingame = false;
-			ResetText();
-		} else {
+			ResetVariables();
+		}
+		else {
 			textMain = "";
 			ingame = true;
+			
+			if (lastRecognizedAge != null) {
+				JSONObject jsonObject = null;
+				switch(lastRecognizedAge) {
+					case Dark: jsonObject = population_darkAge; break;
+					case Feudal: jsonObject = population_feudalAge; break;
+					case Castle: jsonObject = population_castleAge; break;
+					case Imperial: jsonObject = population_imperialAge; break;
+				}
+				// TODO: Code this better, only execute this if needed.
+				try {
+					textBO = getTextFromJSONObject(jsonObject, "" + villagers);
+				}
+				catch (Exception e) {}
+			}
 		}
 		
 		// Show text
@@ -367,7 +403,7 @@ public class Overlay implements NativeKeyListener {
 			if (ageAdvancing) textAdvancing = " (Advancing)";
 			
 			text = ageNames[i] + " Age" + textAdvancing;
-			lastRecognizedAge = text;
+			lastRecognizedAge = Age.values()[i];
 		}
 		
 		// Show text

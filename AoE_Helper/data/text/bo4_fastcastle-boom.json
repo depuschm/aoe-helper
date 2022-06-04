@@ -1,11 +1,12 @@
 [{
-    "title": "Fast Castle - Boom",
+    "title": "BO 04 [BASIC] 27p+2 Boom",
+	"credits": "Cicero (Creator), ZeroEmpires (Voice)",
 	"triggers": {
         "population": {
 			"dark_age": {
 				"3": "Build 2 houses, then send your first 6 villagers to sheep.",
 				"6": "Now send the next 4 villagers to wood.",
-				"10": "Now send the next villager to lure the boar.",
+				"10": "Send the next villager to lure the boar.",
 				"11": "The next 5 villagers should go to berries. Build 2 houses with the next villager.",
 				"14": "Now use one of your villagers underneath the town center to lure the second boar.",
 				"16": "Now send the next 2 villagers to boar.",

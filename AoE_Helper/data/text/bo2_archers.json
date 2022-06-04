@@ -1,21 +1,22 @@
 [{
-    "title": "Archers",
+    "title": "BO 02 [BASIC] 23p Archers",
+	"credits": "Cicero (Creator), ZeroEmpires (Voice)",
 	"triggers": {
         "population": {
 			"dark_age": {
 				"3": "Build 2 houses, then send your first 6 villagers to sheep.",
 				"6": "Now send the next 4 villagers to wood.",
-				"10": "Now send the next villager to lure the boar.",
+				"10": "Send the next villager to lure the boar.",
 				"11": "The next 4 villagers should go to berries. Build 2 houses with the next villager.",
-				"14": "Now use one of your villagers underneath the town center to lure the second boar.",
+				"14": "~ Now use one of your villagers underneath the town center to lure the second boar.",
 				"15": "Now send the next 2 villagers to boar.",
 				"16": "Also make 1 farm using one of the villagers from the boar.",
-				"17": "Now send the rest to wood.",
+				"17": "Now send the rest to wood (Build 1 house with the next villager).",
 				"19": "Make a second lumber camp with the next villager.",
-				"22": "Now research loom, and then click Feudal with 23 population."
+				"21": "Research loom next, and then click Feudal with 23 population."
 			},
 			"feudal_age": {
-				"27": "Once you have enough villagers on gold, the next villagers should all go to farms. (Set the TC gather point to stragglers.)",
+				"26": "Once you have enough villagers on gold, the next villagers should all go to farms.",
 				"35": "Now research wheelbarrow, and start moving villagers from your berries to make new farms."
 			}
 		},

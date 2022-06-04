@@ -156,7 +156,7 @@ public class AoEHelperGUI extends JFrame implements ActionListener, ItemListener
         // Load settings and set GUI to accordingly
         int lastSelectedBO = ini.get("gui", "lastSelectedBO", int.class);
         listBO.setSelectedIndex(lastSelectedBO);
-        loadBuilderOrderText(listBO.getItemAt(lastSelectedBO));
+        loadBuildOrderText(listBO.getItemAt(lastSelectedBO));
         
         boolean showDebugText = ini.get("gui", "showDebugText", boolean.class);
         rdbtnShowDebugText.setSelected(showDebugText);
@@ -242,16 +242,16 @@ public class AoEHelperGUI extends JFrame implements ActionListener, ItemListener
 	public void itemStateChanged(ItemEvent e) {
     	if (e.getStateChange() == ItemEvent.SELECTED) {
             String item = (String) e.getItem();
-            loadBuilderOrderText(item);
+            loadBuildOrderText(item);
          }
 	}
     
-    public void loadBuilderOrderText(String item) {
-    	if (item.equals("Archers")) {
-        	overlay.loadBuildOrderText("bo_archers");
+    public void loadBuildOrderText(String item) {
+    	if (item.equals("BO 02 [BASIC] 23p Archers")) {
+        	overlay.loadBuildOrderText("bo2_archers");
         }
-        else if (item.equals("Fast Castle - Boom")) {
-        	overlay.loadBuildOrderText("bo_fastcastle-boom");
+        else if (item.equals("BO 04 [BASIC] 27p+2 Boom")) {
+        	overlay.loadBuildOrderText("bo4_fastcastle-boom");
 		}
     }
     

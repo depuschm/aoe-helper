@@ -28,6 +28,9 @@ import helper.PartialScreenCapture;
  * Use this class to capture and save civilization images.
  * After that, hashes are generated for images which are used for image recognition.
  * 
+ * Uncommend generateHashmapByCapturingImages() and Press "L" to capture an image.
+ * After all images were captured generate hashes by uncommening generateHashmapByStoredImages().
+ * 
  * Presets: Start a game with 8 players with different civilizations (you might create a scenario with 8 players so you not
  * 			need to set civilizations manually). Press "L" to capture an image. Switch between players with "CTRL + Shift + F1-F8".
  */

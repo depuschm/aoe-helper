@@ -28,6 +28,9 @@ import helper.PartialScreenCapture;
  * Use this class to capture and save age images.
  * After that, hashes are generated for images which are used for image recognition.
  * 
+ * Uncommend generateHashmapByCapturingImages() and Press "L" to capture an image.
+ * After all images were captured generate hashes by uncommening generateHashmapByStoredImages().
+ * 
  * Presets: Type "ninjalui" and "aegis" as cheat.
  */
 public class HashGeneratorAge {
